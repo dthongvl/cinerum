@@ -4,8 +4,7 @@ var uri = 'ws:';
 if (loc.protocol === 'https:') {
     uri = 'wss:';
 }
-uri += '//' + loc.host;
-uri += loc.pathname + 'ws';
+uri += '//' + loc.host + "/ws";
 
 ws = new WebSocket(uri);
 
@@ -14,10 +13,5 @@ ws.onopen = function() {
 };
 
 ws.onmessage = function(evt) {
-    var out = document.getElementById('output');
-    out.innerHTML += evt.data + '<br>';
+    console.log("message")
 };
-
-setInterval(function() {
-    ws.send('Hello, Server!');
-}, 1000);
