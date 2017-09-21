@@ -1,30 +1,19 @@
 package src
 
 import (
-	"github.com/gorilla/mux"
-	"log"
-	"net/http"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 )
 
-func NewRouter() *mux.Router {
-	router := mux.NewRouter().StrictSlash(true)
-	for _, route := range routes {
-		router.Methods(route.Method).
-			Path(route.Pattern).
-			Name(route.Name).
-			Handler(route.HandlerFunc)
-	}
-	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
-	return router
-}
-
 func StartWebServer(port string) {
-	log.Println("Start at: " + port)
-
-	http.Handle("/", NewRouter())
-	http.HandleFunc("/ws", ServeWebSocket)
-
-	http.ListenAndServe(":"+ port, nil)
-
+	e := echo.New()
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "method=${method}, uri=${uri}, status=${status}\n",
+	}))
+	e.Use(middleware.Recover())
+	e.Static("/static", "static")
+	e.File("/", "view/index.html")
+	e.GET("/ws", serveWebSocket)
 	go handleMessages()
+	e.Logger.Fatal(e.Start(":" + port))
 }

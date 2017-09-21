@@ -4,10 +4,11 @@ import (
 	"log"
 	"github.com/gorilla/websocket"
 	"net/http"
+	"github.com/labstack/echo"
 )
 
-var clients = make(map[*websocket.Conn]bool) // connected clients
-var broadcast = make(chan Message) // broadcast channel
+var clients = make(map[*websocket.Conn]bool)
+var broadcast = make(chan Message)
 
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
@@ -15,11 +16,11 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
-func ServeWebSocket(w http.ResponseWriter, r *http.Request) {
-	ws, err := upgrader.Upgrade(w, r, nil)
+func serveWebSocket(c echo.Context) error {
+	ws, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
 	if err != nil {
 		log.Println("upgrade:", err)
-		return
+		return err
 	}
 	defer ws.Close()
 
@@ -34,6 +35,7 @@ func ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 		}
 		broadcast <- msg
 	}
+	return nil
 }
 
 func handleMessages() {
