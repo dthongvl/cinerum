@@ -1,0 +1,50 @@
+body {
+    font-family: Lato, sans-serif;
+}
+
+.message-area {
+    margin-left: 0.75em;
+}
+
+.header {
+    display: flex;
+    align-items: baseline;
+    flex: 1 1 auto;
+}
+
+.time {
+    opacity: 1;
+    display: inline;
+    line-height: 18px;
+    color: #9e9ea6;
+    font-size: 12px;
+    white-space: nowrap;
+    position: relative;
+    z-index: 1;
+}
+
+.message {
+    color: #2C2D30;
+    font-size: 15px;
+    line-height: 22px;
+    word-wrap: break-word;
+    display: block;
+}
+
+.name {
+    margin-right: .25rem;
+    display: inline;
+    font-weight: 900;
+    color: #2C2D30 !important;
+    line-height: 18px;
+    word-wrap: break-word;
+}
+
+.avatar {
+    margin-top: 4px;
+    display: block;
+}
+
+ul {
+    list-style-type: none;
+}

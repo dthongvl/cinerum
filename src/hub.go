@@ -2,6 +2,7 @@ package src
 
 import (
 	"encoding/json"
+	"log"
 )
 
 type Hub struct {
@@ -34,6 +35,7 @@ func (h *Hub) run() {
 			if clients == nil {
 				clients = make(map[*Client]bool)
 				h.rooms[client.roomId] = clients
+				log.Println("NEW ROOM: " + client.roomId)
 			}
 			h.rooms[client.roomId][client] = true
 		case client := <-h.unregister:
@@ -42,13 +44,16 @@ func (h *Hub) run() {
 				if _, ok := h.rooms[client.roomId]; ok {
 					delete(h.rooms[client.roomId], client)
 					close(client.send)
+					log.Println("CLIENT LEAVE")
 					if len(h.rooms[client.roomId]) == 0 {
 						delete(h.rooms, client.roomId)
+						log.Println("DELETE ROOM: " + client.roomId)
 					}
 				}
 			}
 		case msg := <-h.broadcast:
 			jsonMsg, err := json.Marshal(msg)
+			log.Println(msg)
 			if err == nil {
 				clients := h.rooms[msg.RoomId]
 				for client := range clients {
