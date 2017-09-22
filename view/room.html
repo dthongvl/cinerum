@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="http://vjs.zencdn.net/6.2.7/video-js.css" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="/static/css/index.css">
-    <script src="/static/js/index.js"></script>
-    <script src="/static/js/websocket.event.js"></script>
+    <link type="text/css" rel="stylesheet" href="/static/css/room.css">
     <title>Cinerum</title>
 </head>
 <body>
@@ -19,7 +17,13 @@
         <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
     </p>
 </video>
+<div id="log"></div>
+<form id="form">
+    <input type="submit" value="Send" />
+    <input type="text" id="msg" size="64"/>
+</form>
 <script src="http://vjs.zencdn.net/6.2.7/video.js"></script>
 <script src="/static/js/player.event.js"></script>
+<script src="/static/js/websocket.event.js"></script>
 </body>
 </html>

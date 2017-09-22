@@ -1,18 +1,15 @@
 package src
 
-import "github.com/gorilla/websocket"
-
-type Message struct {
-	Room    string `json:"room"`
+type message struct {
+	RoomId    string `json:"roomid"`
 	Username string `json:"username"`
-	MessageType int `json:"messageType"`
-	Message  string `json:"message"`
+	Type string `json:"type"`
+	Data  string `json:"data"`
 }
 
-type Room struct {
-	Members []websocket.Conn
-	TotalMember int64
-	RoomId string
+type ABC struct {
+	RoomId    string `json:"roomid"`
+	Username string `json:"username"`
+	Type string `json:"type"`
+	Data  string `json:"data"`
 }
-
-var rooms []Room

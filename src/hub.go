@@ -1,52 +1,51 @@
 package src
 
-import (
-	"log"
-	"github.com/gorilla/websocket"
-	"net/http"
-	"github.com/labstack/echo"
-)
+import "encoding/json"
 
-var clients = make(map[*websocket.Conn]bool)
-var broadcast = make(chan Message)
+type Hub struct {
+	// Registered clients.
+	clients map[*Client]bool
 
-var upgrader = websocket.Upgrader{
-	CheckOrigin: func(r *http.Request) bool {
-		return true
-	},
+	// Inbound messages from the clients.
+	broadcast chan message
+
+	// Register requests from the clients.
+	register chan *Client
+
+	// Unregister requests from clients.
+	unregister chan *Client
 }
 
-func serveWebSocket(c echo.Context) error {
-	ws, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
-	if err != nil {
-		log.Println("upgrade:", err)
-		return err
+func newHub() *Hub {
+	return &Hub{
+		broadcast:  make(chan message),
+		register:   make(chan *Client),
+		unregister: make(chan *Client),
+		clients:    make(map[*Client]bool),
 	}
-	defer ws.Close()
-
-	clients[ws] = true
-	for {
-		var msg Message
-		err := ws.ReadJSON(&msg)
-		if err != nil {
-			log.Printf("error: %v", err)
-			delete(clients, ws)
-			break
-		}
-		broadcast <- msg
-	}
-	return nil
 }
 
-func handleMessages() {
+func (h *Hub) run() {
 	for {
-		msg := <-broadcast
-		for client := range clients {
-			err := client.WriteJSON(msg)
-			if err != nil {
-				log.Printf("error: %v", err)
-				client.Close()
-				delete(clients, client)
+		select {
+		case client := <-h.register:
+			h.clients[client] = true
+		case client := <-h.unregister:
+			if _, ok := h.clients[client]; ok {
+				delete(h.clients, client)
+				close(client.send)
+			}
+		case msg := <-h.broadcast:
+			jsonMsg, err := json.Marshal(msg)
+			if err == nil {
+				for client := range h.clients {
+					select {
+					case client.send <- jsonMsg:
+					default:
+						close(client.send)
+						delete(h.clients, client)
+					}
+				}
 			}
 		}
 	}

@@ -13,12 +13,17 @@ func StartWebServer(port string) {
 	}))
 	e.Use(middleware.Recover())
 
+	hub := newHub()
+	go hub.run()
+
 	e.Static("/static", "static")
 	e.File("/", "view/index.html")
 	e.GET("/room/:roomId", joinRoom)
 	e.GET("/room/create", createRoom)
-	e.GET("/ws", serveWebSocket)
+	e.GET("/ws", func(c echo.Context) error {
+		serveWebSocket(hub, c.QueryParam("roomId"), c.Response(), c.Request())
+		return nil
+	})
 
-	go handleMessages()
 	e.Logger.Fatal(e.Start(":" + port))
 }
