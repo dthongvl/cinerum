@@ -1,10 +1,11 @@
 package src
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 type Hub struct {
-	// Registered clients.
-	clients map[*Client]bool
+	rooms map[string]map[*Client]bool
 
 	// Inbound messages from the clients.
 	broadcast chan message
@@ -21,7 +22,7 @@ func newHub() *Hub {
 		broadcast:  make(chan message),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
-		clients:    make(map[*Client]bool),
+		rooms:    make(map[string]map[*Client]bool),
 	}
 }
 
@@ -29,21 +30,36 @@ func (h *Hub) run() {
 	for {
 		select {
 		case client := <-h.register:
-			h.clients[client] = true
+			clients := h.rooms[client.roomId]
+			if clients == nil {
+				clients = make(map[*Client]bool)
+				h.rooms[client.roomId] = clients
+			}
+			h.rooms[client.roomId][client] = true
 		case client := <-h.unregister:
-			if _, ok := h.clients[client]; ok {
-				delete(h.clients, client)
-				close(client.send)
+			clients := h.rooms[client.roomId]
+			if clients != nil {
+				if _, ok := h.rooms[client.roomId]; ok {
+					delete(h.rooms[client.roomId], client)
+					close(client.send)
+					if len(h.rooms[client.roomId]) == 0 {
+						delete(h.rooms, client.roomId)
+					}
+				}
 			}
 		case msg := <-h.broadcast:
 			jsonMsg, err := json.Marshal(msg)
 			if err == nil {
-				for client := range h.clients {
+				clients := h.rooms[msg.RoomId]
+				for client := range clients {
 					select {
 					case client.send <- jsonMsg:
 					default:
 						close(client.send)
-						delete(h.clients, client)
+						delete(h.rooms[msg.RoomId], client)
+						if len(h.rooms[msg.RoomId]) == 0 {
+							delete(h.rooms, msg.RoomId)
+						}
 					}
 				}
 			}

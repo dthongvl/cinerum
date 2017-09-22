@@ -4,7 +4,6 @@ import (
 	"log"
 	"time"
 	"github.com/gorilla/websocket"
-	"fmt"
 )
 
 const (

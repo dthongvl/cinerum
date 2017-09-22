@@ -2,6 +2,7 @@ window.onload = function () {
     var conn;
     var msg = document.getElementById("msg");
     var log = document.getElementById("log");
+    var roomId = document.URL.substring(document.URL.lastIndexOf("/") + 1, document.URL.length)
     function appendLog(item) {
         var doScroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
         log.appendChild(item);
@@ -20,13 +21,13 @@ window.onload = function () {
             data: msg.value,
             type: "chat",
             username: "username",
-            roomid: "123"
+            roomId: roomId
         }));
         msg.value = "";
         return false;
     };
     if (window["WebSocket"]) {
-        conn = new WebSocket("ws://" + document.location.host + "/ws");
+        conn = new WebSocket("ws://" + document.location.host + "/ws?roomId=" + roomId);
         conn.onclose = function (evt) {
             var item = document.createElement("div");
             item.innerHTML = "<b>Connection closed.</b>";

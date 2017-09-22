@@ -23,6 +23,7 @@ func serveWebSocket(hub *Hub, roomId string, w http.ResponseWriter, r *http.Requ
 		log.Println("upgrade:", err)
 		return err
 	}
+
 	client := &Client{hub: hub, conn: conn, send: make(chan []byte, 256), roomId: roomId}
 	client.hub.register <- client
 
