@@ -2,17 +2,21 @@ body {
     font-family: Lato, sans-serif;
 }
 
+#chat-box {
+    height: 88%;
+}
+
 .message-area {
     margin-left: 0.75em;
 }
 
-.header {
+.message-header {
     display: flex;
     align-items: baseline;
     flex: 1 1 auto;
 }
 
-.time {
+.message-time {
     opacity: 1;
     display: inline;
     line-height: 18px;
@@ -31,7 +35,7 @@ body {
     display: block;
 }
 
-.name {
+.user-name {
     margin-right: .25rem;
     display: inline;
     font-weight: 900;
@@ -40,7 +44,7 @@ body {
     word-wrap: break-word;
 }
 
-.avatar {
+.user-avatar {
     margin-top: 4px;
     display: block;
 }
