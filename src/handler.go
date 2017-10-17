@@ -5,10 +5,20 @@ import (
 	"net/http"
 	"encoding/base64"
 	"log"
+	"cinerum/template"
+	"bytes"
 )
 
+func index(c echo.Context) error {
+	buffer := new(bytes.Buffer)
+	template.Index(buffer)
+	return c.HTML(http.StatusOK, buffer.String())
+}
+
 func joinRoom(c echo.Context) error {
-	return c.File("view/room.html")
+	buffer := new(bytes.Buffer)
+	template.JoinRoom(c.Param("roomId"), buffer)
+	return c.HTML(http.StatusOK, buffer.String())
 }
 
 func createRoom(c echo.Context) error {

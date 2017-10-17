@@ -1,0 +1,49 @@
+<%: func JoinRoom(roomId string, buffer *bytes.Buffer) %>
+<%~ "base.html" %>
+
+<%@ header { %>
+<link href="http://vjs.zencdn.net/6.2.7/video-js.css" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="/static/css/room.css">
+<title>Room <%= roomId %></title>
+<script>
+    var roomId = "<%= roomId %>";
+</script>
+<% } %>
+<%@ body { %>
+<div class="container">
+    <div class="row">
+        <div class="col-7">
+            <video id="room-video" width=640 height=480 class="video-js vjs-default-skin" controls>
+                <source src="http://0.0.0.0/live/livestream_ff.m3u8" type="application/x-mpegURL">
+            </video>
+        </div>
+        <div class="col-5">
+            <ul id="chat-box">
+                <li>
+                    <div class="row">
+                        <div class="col-1">
+                            <img class="user-avatar rounded" width="36px" height="36px"
+                                 src="/static/img/default-avatar.jpeg"
+                                 alt="...">
+                        </div>
+                        <div class="col-10 message-area">
+                            <div class="message-header">
+                                <span class="user-name">dthongvl</span><span class="message-time">11:00 PM</span>
+                            </div>
+                            <div class="message">
+                                hellogsgrhdthdthtdhtdhdthtdhtdhth
+                                htdhtdhdthtdhdth
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <input type="text" class="form-control" id="message-input" placeholder="Message your friend">
+        </div>
+    </div>
+</div>
+
+<script src="http://vjs.zencdn.net/6.2.7/video.js"></script>
+<script src="https://unpkg.com/videojs-contrib-hls.js@3.0.3/dist/videojs-contrib-hlsjs.min.js"></script>
+<script src="/static/js/room.js"></script>
+<% } %>

@@ -17,7 +17,7 @@ func StartWebServer(port string) {
 	go hub.run()
 
 	e.Static("/static", "static")
-	e.File("/", "view/index.html")
+	e.GET("/", index)
 	e.GET("/room/:roomId", joinRoom)
 	e.GET("/room/create", createRoom)
 	e.GET("/ws", func(c echo.Context) error {
