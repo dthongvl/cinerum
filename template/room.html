@@ -1,12 +1,12 @@
-<%: func JoinRoom(roomId string, buffer *bytes.Buffer) %>
+<%: func JoinRoom(roomID string, buffer *bytes.Buffer) %>
 <%~ "base.html" %>
 
 <%@ header { %>
 <link href="http://vjs.zencdn.net/6.2.7/video-js.css" rel="stylesheet">
 <link type="text/css" rel="stylesheet" href="/static/css/room.css">
-<title>Room <%= roomId %></title>
+<title>Room <%= roomID %></title>
 <script>
-    var roomId = "<%= roomId %>";
+    var roomID = "<%= roomID %>";
 </script>
 <% } %>
 <%@ body { %>

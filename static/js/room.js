@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var conn = new WebSocket("ws://" + document.location.host + "/ws?roomId=" + roomId);
+    var conn = new WebSocket("ws://" + document.location.host + "/ws?roomID=" + roomID);
     conn.onopen = function (event) {
         document.getElementById("message-input").addEventListener("keyup", function (event) {
             event.preventDefault();
@@ -41,7 +41,7 @@ $(document).ready(function () {
             data: messageInput.value,
             username: "tester",
             type: "chat",
-            roomId: roomId
+            roomID: roomID
         }));
         messageInput.value = "";
     }

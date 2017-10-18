@@ -1,8 +1,10 @@
-package src
+package chat
 
 import (
 	"log"
 	"time"
+
+	"github.com/dthongvl/cinerum/src/model"
 	"github.com/gorilla/websocket"
 )
 
@@ -20,40 +22,35 @@ const (
 	maxMessageSize = 512
 )
 
-var upgrader = websocket.Upgrader{
-	ReadBufferSize:  1024,
-	WriteBufferSize: 1024,
-}
-
-// Client is a middleman between the websocket connection and the hub.
+// Client is a middleman between the websocket connection and the ChatHub.
 type Client struct {
-	hub *Hub
+	ChatHub *Hub
 
-	roomId string
+	RoomID string
 
 	// The websocket connection.
-	conn *websocket.Conn
+	Conn *websocket.Conn
 
 	// Buffered channel of outbound messages.
-	send chan []byte
+	Send chan []byte
 }
 
-// readPump pumps messages from the websocket connection to the hub.
+// readPump pumps messages from the websocket connection to the ChatHub.
 //
 // The application runs readPump in a per-connection goroutine. The application
 // ensures that there is at most one reader on a connection by executing all
 // reads from this goroutine.
-func (c *Client) readPump() {
+func (c *Client) ReadPump() {
 	defer func() {
-		c.hub.unregister <- c
-		c.conn.Close()
+		c.ChatHub.unregister <- c
+		c.Conn.Close()
 	}()
-	c.conn.SetReadLimit(maxMessageSize)
-	c.conn.SetReadDeadline(time.Now().Add(pongWait))
-	c.conn.SetPongHandler(func(string) error { c.conn.SetReadDeadline(time.Now().Add(pongWait)); return nil })
+	c.Conn.SetReadLimit(maxMessageSize)
+	c.Conn.SetReadDeadline(time.Now().Add(pongWait))
+	c.Conn.SetPongHandler(func(string) error { c.Conn.SetReadDeadline(time.Now().Add(pongWait)); return nil })
 	for {
-		var msg message
-		err := c.conn.ReadJSON(&msg)
+		var msg model.Message
+		err := c.Conn.ReadJSON(&msg)
 		if err != nil {
 			log.Println("READ ERROR")
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway) {
@@ -61,49 +58,49 @@ func (c *Client) readPump() {
 			}
 			break
 		}
-		c.hub.broadcast <- msg
+		c.ChatHub.broadcast <- msg
 	}
 }
 
-// writePump pumps messages from the hub to the websocket connection.
+// writePump pumps messages from the ChatHub to the websocket connection.
 //
 // A goroutine running writePump is started for each connection. The
 // application ensures that there is at most one writer to a connection by
 // executing all writes from this goroutine.
-func (c *Client) writePump() {
+func (c *Client) WritePump() {
 	ticker := time.NewTicker(pingPeriod)
 	defer func() {
 		ticker.Stop()
-		c.conn.Close()
+		c.Conn.Close()
 	}()
 	for {
 		select {
-		case msg, ok := <-c.send:
-			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
+		case msg, ok := <-c.Send:
+			c.Conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if !ok {
-				// The hub closed the channel.
-				c.conn.WriteMessage(websocket.CloseMessage, []byte{})
+				// The ChatHub closed the channel.
+				c.Conn.WriteMessage(websocket.CloseMessage, []byte{})
 				return
 			}
 
-			w, err := c.conn.NextWriter(websocket.TextMessage)
+			w, err := c.Conn.NextWriter(websocket.TextMessage)
 			if err != nil {
 				return
 			}
 			w.Write(msg)
 
 			// Add queued chat messages to the current websocket message.
-			n := len(c.send)
+			n := len(c.Send)
 			for i := 0; i < n; i++ {
-				w.Write(<-c.send)
+				w.Write(<-c.Send)
 			}
 
 			if err := w.Close(); err != nil {
 				return
 			}
 		case <-ticker.C:
-			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
-			if err := c.conn.WriteMessage(websocket.PingMessage, []byte{}); err != nil {
+			c.Conn.SetWriteDeadline(time.Now().Add(writeWait))
+			if err := c.Conn.WriteMessage(websocket.PingMessage, []byte{}); err != nil {
 				return
 			}
 		}

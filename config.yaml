@@ -1,0 +1,7 @@
+database:
+  sqlite:
+    dbFile: memory
+server:
+  port: 3000
+  logLevel: ERROR
+  logFormat: method=${method}, uri=${uri}, status=${status}, time=${latency_human}

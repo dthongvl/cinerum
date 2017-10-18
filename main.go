@@ -1,9 +1,15 @@
 package main
 
 import (
-	"cinerum/src"
+	"github.com/dthongvl/cinerum/src/core/app"
+	"github.com/dthongvl/cinerum/src/core/chat"
+	"github.com/dthongvl/cinerum/src/core/config"
 )
 
 func main() {
-	src.StartWebServer("3000")
+	config.Load("config.yaml")
+	myApp := app.New()
+	myApp.RegisterRoute()
+	chat.MyHub.Run()
+	myApp.Start()
 }
