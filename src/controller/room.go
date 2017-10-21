@@ -17,9 +17,20 @@ var upgrader = websocket.Upgrader{
 	WriteBufferSize: 1024,
 }
 
+func getSession(c echo.Context) (isLoggedIn bool, username string) {
+	usernameCookie, err := c.Cookie("username")
+	if err != nil {
+		log.Info("User is not authenticated")
+		return false, ""
+	}
+	log.Info("User is logged in")
+	return true, usernameCookie.Value
+}
+
 func JoinRoom(c echo.Context) error {
+	isLoggedIn, username := getSession(c)
 	buffer := new(bytes.Buffer)
-	template.JoinRoom(c.Param("roomID"), buffer)
+	template.JoinRoom(isLoggedIn, username, c.Param("roomID"), buffer)
 	return c.HTML(http.StatusOK, buffer.String())
 }
 
@@ -36,7 +47,9 @@ func ServeWebSocket(c echo.Context) error {
 		return err
 	}
 
-	client := &chat.Client{ChatHub: chat.MyHub, Conn: conn, Send: make(chan []byte, 256), RoomID: c.QueryParam("roomID")}
+	isLoggedIn, username := getSession(c)
+
+	client := &chat.Client{Username: username, IsLoggedIn: isLoggedIn, ChatHub: chat.MyHub, Conn: conn, Send: make(chan []byte, 256), RoomID: c.QueryParam("roomID")}
 	client.ChatHub.Register(client)
 
 	// Allow collection of memory referenced by the caller by doing all work in

@@ -33,6 +33,10 @@ type Client struct {
 
 	// Buffered channel of outbound messages.
 	Send chan []byte
+
+	IsLoggedIn bool
+
+	Username string
 }
 
 // readPump pumps messages from the websocket connection to the ChatHub.
@@ -49,7 +53,7 @@ func (c *Client) ReadPump() {
 	c.Conn.SetReadDeadline(time.Now().Add(pongWait))
 	c.Conn.SetPongHandler(func(string) error { c.Conn.SetReadDeadline(time.Now().Add(pongWait)); return nil })
 	for {
-		var msg model.Message
+		var msg model.MessageBroadcast
 		err := c.Conn.ReadJSON(&msg)
 		if err != nil {
 			log.Println("READ ERROR")
@@ -58,7 +62,10 @@ func (c *Client) ReadPump() {
 			}
 			break
 		}
-		c.ChatHub.broadcast <- msg
+		if c.IsLoggedIn {
+			msg.Username = c.Username
+			c.ChatHub.broadcast <- msg
+		}
 	}
 }
 

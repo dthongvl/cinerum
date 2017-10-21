@@ -1,4 +1,4 @@
-<%: func JoinRoom(roomID string, buffer *bytes.Buffer) %>
+<%: func JoinRoom(isLoggedIn bool, username string, roomID string, buffer *bytes.Buffer) %>
 <%~ "base.html" %>
 
 <%@ header { %>
@@ -7,14 +7,25 @@
 <title>Room <%= roomID %></title>
 <script>
     var roomID = "<%= roomID %>";
+    var username = "<%= username %>";
 </script>
+<style>
+    #loginBtn {
+<% if isLoggedIn { %>
+   display: none;
+        <% } else { %>
+        display: inline;
+        <% } %>
+   }
+</style>
+<% } %>
 <% } %>
 <%@ body { %>
 <div class="container">
     <div class="row">
         <div class="col-7">
             <video id="room-video" width=640 height=480 class="video-js vjs-default-skin" controls>
-                <source src="http://0.0.0.0/live/livestream_ff.m3u8" type="application/x-mpegURL">
+                <source src="http://192.168.1.38:8000/play/hls/ffmw/index.m3u8" type="application/x-mpegURL">
             </video>
         </div>
         <div class="col-5">

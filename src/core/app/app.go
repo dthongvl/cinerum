@@ -31,6 +31,9 @@ func (app *App) Init() {
 func (app *App) RegisterRoute() {
 	app.server.Static("/static", "static")
 	app.server.GET("/", controller.Index)
+	app.server.POST("/register", controller.Register)
+	app.server.POST("/login", controller.Login)
+	app.server.GET("/logout", controller.Logout)
 	app.server.GET("/room/:roomID", controller.JoinRoom)
 	app.server.GET("/room/create", controller.CreateRoom)
 	app.server.GET("/ws", controller.ServeWebSocket)

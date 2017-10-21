@@ -13,10 +13,10 @@ $(document).ready(function () {
     };
 
     conn.onmessage = function (event) {
+        console.log("ahihi");
+        console.log(event.data);
         var message = JSON.parse(event.data);
-        if (message['type'] === "chat") {
-            onChatCommand(message);
-        }
+        onChatCommand(message);
     };
 
     var messageFormat = '<div class="row">\n' +
@@ -39,8 +39,7 @@ $(document).ready(function () {
         var messageInput = document.getElementById("message-input");
         conn.send(JSON.stringify({
             data: messageInput.value,
-            username: "tester",
-            type: "chat",
+            username: username,
             roomID: roomID
         }));
         messageInput.value = "";
@@ -59,23 +58,11 @@ $(document).ready(function () {
         document.getElementById("chat-box").appendChild(li);
     }
 
-    var player = videojs("room-video");
+    var options = {
+        hls: {
+            withCredentials: true
+        }
+    };
 
-    player.ready(function () {
-        player.on("play", function () {
-            console.log("play");
-        });
-
-        player.on("pause", function () {
-            console.log("paused");
-        });
-
-        player.on("timeupdate", function () {
-            console.log("time update" + player.currentTime());
-        });
-
-        player.on("seeked", function () {
-            console.log("seeked");
-        });
-    });
+    videojs("room-video", {flash: options, html5: options});
 });

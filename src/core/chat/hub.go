@@ -14,7 +14,7 @@ type Hub struct {
 	rooms map[string]map[*Client]bool
 
 	// Inbound messages from the clients.
-	broadcast chan model.Message
+	broadcast chan model.MessageBroadcast
 
 	// Register requests from the clients.
 	register chan *Client
@@ -25,7 +25,7 @@ type Hub struct {
 
 func NewHub() *Hub {
 	return &Hub{
-		broadcast:  make(chan model.Message),
+		broadcast:  make(chan model.MessageBroadcast),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
 		rooms:      make(map[string]map[*Client]bool),
@@ -63,7 +63,7 @@ func (h *Hub) Run() {
 				}
 			case msg := <-h.broadcast:
 				jsonMsg, err := json.Marshal(msg)
-				log.Info(msg)
+				log.Println("BROADCAST:", msg, "TO ROOM", msg.RoomID)
 				if err == nil {
 					clients := h.rooms[msg.RoomID]
 					for client := range clients {
