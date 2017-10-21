@@ -2,16 +2,15 @@ package main
 
 import (
 	"github.com/dthongvl/cinerum/src/core/app"
-	"github.com/dthongvl/cinerum/src/core/chat"
-	"github.com/dthongvl/cinerum/src/controller"
+	"github.com/dthongvl/cinerum/src/core/global"
 	log "github.com/sirupsen/logrus"
 )
 
 func main() {
 	log.SetLevel(log.DebugLevel)
-	controller.View.SetDevelopmentMode(true)
+	global.View.SetDevelopmentMode(true)
 	myApp := app.New()
 	myApp.RegisterRoute()
-	chat.MyHub.Run()
+	global.MyHub.Run()
 	myApp.Start()
 }

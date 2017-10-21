@@ -8,8 +8,6 @@ import (
 	"github.com/dthongvl/cinerum/src/model"
 )
 
-var MyHub = NewHub()
-
 type Hub struct {
 	rooms map[string]map[*Client]bool
 

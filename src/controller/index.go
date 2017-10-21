@@ -5,10 +5,11 @@ import (
 	"github.com/labstack/echo"
 	"net/http"
 	"bytes"
+	"github.com/dthongvl/cinerum/src/core/global"
 )
 
 func Index(c echo.Context) error {
-	t, err := View.GetTemplate("index.jet")
+	t, err := global.View.GetTemplate("index.jet")
 	if err != nil {
 		log.Println(err)
 		return c.String(http.StatusNoContent, "No content")

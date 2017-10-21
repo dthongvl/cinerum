@@ -6,8 +6,6 @@ import (
 	"github.com/labstack/echo/middleware"
 )
 
-//var store = sessions.NewCookieStore([]byte("something-very-secret"))
-
 type App struct {
 	port   string
 	server *echo.Echo
