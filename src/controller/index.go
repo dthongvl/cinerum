@@ -1,14 +1,22 @@
 package controller
 
 import (
-	"bytes"
-	"github.com/dthongvl/cinerum/template"
+	log "github.com/sirupsen/logrus"
 	"github.com/labstack/echo"
 	"net/http"
+	"bytes"
 )
 
 func Index(c echo.Context) error {
-	buffer := new(bytes.Buffer)
-	template.Index(buffer)
-	return c.HTML(http.StatusOK, buffer.String())
+	t, err := View.GetTemplate("index.jet")
+	if err != nil {
+		log.Println(err)
+		return c.String(http.StatusNoContent, "No content")
+	}
+	var w bytes.Buffer
+	if err = t.Execute(&w, nil, nil); err != nil {
+		log.Println(err)
+		return c.String(http.StatusNoContent, "No content")
+	}
+	return c.HTML(http.StatusOK, w.String())
 }

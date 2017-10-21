@@ -6,10 +6,10 @@ import (
 	"net/http"
 
 	"github.com/dthongvl/cinerum/src/core/chat"
-	"github.com/dthongvl/cinerum/template"
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo"
 	log "github.com/sirupsen/logrus"
+	"github.com/CloudyKit/jet"
 )
 
 var upgrader = websocket.Upgrader{
@@ -28,10 +28,20 @@ func getSession(c echo.Context) (isLoggedIn bool, username string) {
 }
 
 func JoinRoom(c echo.Context) error {
+	t, err := View.GetTemplate("room.jet")
+	if err != nil {
+		return c.String(http.StatusNoContent, "No content")
+	}
+	var w bytes.Buffer
+	vars := make(jet.VarMap)
 	isLoggedIn, username := getSession(c)
-	buffer := new(bytes.Buffer)
-	template.JoinRoom(isLoggedIn, username, c.Param("roomID"), buffer)
-	return c.HTML(http.StatusOK, buffer.String())
+	vars.Set("roomID", c.Param("roomID"))
+	vars.Set("username", username)
+	vars.Set("isLoggedIn", isLoggedIn)
+	if err = t.Execute(&w, vars, nil); err != nil {
+		return c.String(http.StatusNoContent, "No content")
+	}
+	return c.HTML(http.StatusOK, w.String())
 }
 
 func CreateRoom(c echo.Context) error {

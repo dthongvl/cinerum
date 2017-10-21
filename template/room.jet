@@ -1,31 +1,29 @@
-<%: func JoinRoom(isLoggedIn bool, username string, roomID string, buffer *bytes.Buffer) %>
-<%~ "base.html" %>
+{{ extends "layouts/base.jet" }}
 
-<%@ header { %>
+{{ block header() }}
 <link href="http://vjs.zencdn.net/6.2.7/video-js.css" rel="stylesheet">
 <link type="text/css" rel="stylesheet" href="/static/css/room.css">
-<title>Room <%= roomID %></title>
+<title>Room {{ roomID }}</title>
 <script>
-    var roomID = "<%= roomID %>";
-    var username = "<%= username %>";
+    var roomID = "{{ roomID }}";
+    var username = "{{ username }}";
 </script>
 <style>
     #loginBtn {
-<% if isLoggedIn { %>
+{{ if isLoggedIn }}
    display: none;
-        <% } else { %>
-        display: inline;
-        <% } %>
+{{ else }}
+   display: inline;
+{{ end }}
    }
 </style>
-<% } %>
-<% } %>
-<%@ body { %>
+{{ end }}
+{{ block body() }}
 <div class="container">
     <div class="row">
         <div class="col-7">
             <video id="room-video" width=640 height=480 class="video-js vjs-default-skin" controls>
-                <source src="http://192.168.1.38:8000/play/hls/ffmw/index.m3u8" type="application/x-mpegURL">
+                <source src="http://localhost:8000/play/hls/ffmw/index.m3u8" type="application/x-mpegURL">
             </video>
         </div>
         <div class="col-5">
@@ -57,4 +55,4 @@
 <script src="http://vjs.zencdn.net/6.2.7/video.js"></script>
 <script src="https://unpkg.com/videojs-contrib-hls.js@3.0.3/dist/videojs-contrib-hlsjs.min.js"></script>
 <script src="/static/js/room.js"></script>
-<% } %>
+{{ end }}

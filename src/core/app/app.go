@@ -4,8 +4,9 @@ import (
 	"github.com/dthongvl/cinerum/src/controller"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"github.com/spf13/viper"
 )
+
+//var store = sessions.NewCookieStore([]byte("something-very-secret"))
 
 type App struct {
 	port   string
@@ -20,10 +21,10 @@ func New() *App {
 
 func (app *App) Init() {
 	app.server = echo.New()
-	app.port = viper.GetString("server.port")
+	app.port = "3000"
 
 	app.server.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Format: viper.GetString("server.logFormat") + "\n",
+		Format: "method=${method}, uri=${uri}, status=${status}, time=${latency_human}\n",
 	}))
 	app.server.Use(middleware.Recover())
 }
