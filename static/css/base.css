@@ -5,3 +5,7 @@ body {
 #myNav {
     margin-bottom: 20px;
 }
+
+textarea {
+    resize: none;
+}

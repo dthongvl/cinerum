@@ -18,3 +18,7 @@ ffmpeg -re -i movie.ext -c:v libx264 -preset veryfast -maxrate 3000k -bufsize 60
 ```
 - Run main.go
 - [Enjoy](http://localhost:3000)
+
+### TODO
+- [ ] Adjust chat box and player size
+- [ ] Show auth modal when unauthenticated user chat
