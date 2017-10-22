@@ -10,5 +10,5 @@ var (
 	SessionName = "auth"
 	CookieStore = sessions.NewCookieStore([]byte("something-very-secret"))
 	View = jet.NewHTMLSet("./template")
-	MyHub = chat.NewHub()
+	ChatHub = chat.NewHub()
 )

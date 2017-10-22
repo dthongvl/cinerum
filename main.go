@@ -9,8 +9,8 @@ import (
 func main() {
 	log.SetLevel(log.DebugLevel)
 	global.View.SetDevelopmentMode(true)
-	myApp := app.New()
-	myApp.RegisterRoute()
-	global.MyHub.Run()
-	myApp.Start()
+	global.ChatHub.Run()
+	cinerum := app.New()
+	cinerum.RegisterRoute()
+	cinerum.Start()
 }

@@ -64,7 +64,13 @@ func ServeWebSocket(c echo.Context) error {
 
 	isLoggedIn, username := getSession(c)
 
-	client := &chat.Client{Username: username, IsLoggedIn: isLoggedIn, ChatHub: global.MyHub, Conn: conn, Send: make(chan []byte, 256), RoomID: c.QueryParam("roomID")}
+	client := &chat.Client{
+		Username: username,
+		IsLoggedIn: isLoggedIn,
+		ChatHub: global.ChatHub,
+		Conn: conn,
+		Send: make(chan []byte, 256),
+		RoomID: c.QueryParam("roomID")}
 	client.ChatHub.Register(client)
 
 	// Allow collection of memory referenced by the caller by doing all work in

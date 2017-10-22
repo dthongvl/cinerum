@@ -8,15 +8,6 @@
     var roomID = "{{ roomID }}";
     var username = "{{ username }}";
 </script>
-<style>
-    #loginBtn {
-{{ if isLoggedIn }}
-   display: none;
-{{ else }}
-   display: inline;
-{{ end }}
-   }
-</style>
 {{ end }}
 {{ block body() }}
 <div class="container">
@@ -47,7 +38,7 @@
                     </div>
                 </li>
             </ul>
-            <input type="text" class="form-control" id="message-input" placeholder="Message your friend">
+            <textarea class="form-control" id="message-input" placeholder="Message your friend"></textarea>
         </div>
     </div>
 </div>
