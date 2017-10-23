@@ -3,42 +3,26 @@
 {{ block header() }}
 <link href="http://vjs.zencdn.net/6.2.7/video-js.css" rel="stylesheet">
 <link type="text/css" rel="stylesheet" href="/static/css/room.css">
-<title>Room {{ roomID }}</title>
+<title>{{ roomTitle }}</title>
 <script>
     var roomID = "{{ roomID }}";
     var username = "{{ username }}";
 </script>
 {{ end }}
 {{ block body() }}
-<div class="container">
+<div class="container-fluid">
     <div class="row">
+        <div class="col-2"></div>
         <div class="col-7">
-            <video id="room-video" width=640 height=480 class="video-js vjs-default-skin" controls>
-                <source src="http://localhost:8000/play/hls/ffmw/index.m3u8" type="application/x-mpegURL">
+            <video autoplay id="room-video" width=640 height=480 class="video-js vjs-default-skin" controls>
+                <source src="http://localhost/live/{{ roomID }}/index.m3u8" type="application/x-mpegURL">
             </video>
         </div>
-        <div class="col-5">
+        <div class="col-3">
             <ul id="chat-box">
-                <li>
-                    <div class="row">
-                        <div class="col-1">
-                            <img class="user-avatar rounded" width="36px" height="36px"
-                                 src="/static/img/default-avatar.jpeg"
-                                 alt="...">
-                        </div>
-                        <div class="col-10 message-area">
-                            <div class="message-header">
-                                <span class="user-name">dthongvl</span><span class="message-time">11:00 PM</span>
-                            </div>
-                            <div class="message">
-                                hellogsgrhdthdthtdhtdhdthtdhtdhth
-                                htdhtdhdthtdhdth
-                            </div>
-                        </div>
-                    </div>
-                </li>
+            <li><b>dthongvl: </b><small>ahihi</small></li>
             </ul>
-            <textarea class="form-control" id="message-input" placeholder="Message your friend"></textarea>
+            <textarea class="form-control" id="message-input" placeholder="Send a message.."></textarea>
         </div>
     </div>
 </div>

@@ -2,7 +2,6 @@ package controller
 
 import (
 	"bytes"
-	"encoding/base64"
 	"net/http"
 
 	"github.com/dthongvl/cinerum/src/core/chat"
@@ -41,6 +40,7 @@ func JoinRoom(c echo.Context) error {
 	vars := make(jet.VarMap)
 	isLoggedIn, username := getSession(c)
 	vars.Set("roomID", c.Param("roomID"))
+	vars.Set("roomTitle", "Room cua " + c.Param("roomID"))
 	vars.Set("username", username)
 	vars.Set("isLoggedIn", isLoggedIn)
 	if err = t.Execute(&w, vars, nil); err != nil {
@@ -49,10 +49,8 @@ func JoinRoom(c echo.Context) error {
 	return c.HTML(http.StatusOK, w.String())
 }
 
-func CreateRoom(c echo.Context) error {
-	clientIP := c.RealIP()
-	roomID := base64.StdEncoding.EncodeToString([]byte(clientIP + "TMT"))
-	return c.Redirect(http.StatusMovedPermanently, "/room/"+roomID)
+func RoomSetting(c echo.Context) error {
+	return c.String(http.StatusOK, "hihi")
 }
 
 func ServeWebSocket(c echo.Context) error {
@@ -70,7 +68,7 @@ func ServeWebSocket(c echo.Context) error {
 		ChatHub: global.ChatHub,
 		Conn: conn,
 		Send: make(chan []byte, 256),
-		RoomID: c.QueryParam("roomID")}
+		RoomID: c.Param("roomID")}
 	client.ChatHub.Register(client)
 
 	// Allow collection of memory referenced by the caller by doing all work in

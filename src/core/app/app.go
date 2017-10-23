@@ -33,9 +33,11 @@ func (app *App) RegisterRoute() {
 	app.server.POST("/register", controller.Register)
 	app.server.POST("/login", controller.Login)
 	app.server.GET("/logout", controller.Logout)
-	app.server.GET("/room/:roomID", controller.JoinRoom)
-	app.server.GET("/room/create", controller.CreateRoom)
-	app.server.GET("/ws", controller.ServeWebSocket)
+	app.server.GET("/:roomID", controller.JoinRoom)
+	app.server.GET("/:roomID/setting", controller.RoomSetting)
+	app.server.GET("/:roomID/ws", controller.ServeWebSocket)
+	app.server.POST("/on_publish", controller.OnPublish)
+	app.server.POST("/on_publish_done", controller.OnPublishDone)
 }
 
 func (app *App) Start() {

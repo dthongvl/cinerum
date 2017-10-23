@@ -43,5 +43,6 @@ func Logout(c echo.Context) error {
 			log.Error(err)
 		}
 	}
-	return c.Redirect(http.StatusFound, "/")
+	referer := c.Request().Header.Get("Referer")
+	return c.Redirect(http.StatusFound, referer)
 }
