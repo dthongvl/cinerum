@@ -50,7 +50,32 @@ func JoinRoom(c echo.Context) error {
 }
 
 func RoomSetting(c echo.Context) error {
-	return c.String(http.StatusOK, "hihi")
+	t, err := global.View.GetTemplate("setting.jet")
+	if err != nil {
+		return c.String(http.StatusNoContent, "No content")
+	}
+	var w bytes.Buffer
+	vars := make(jet.VarMap)
+	isLoggedIn, username := getSession(c)
+	vars.Set("isLoggedIn", isLoggedIn)
+	vars.Set("username", username)
+	vars.Set("streamTitle", "title")
+	vars.Set("streamURL", global.StreamURL)
+	vars.Set("streamKey", "key" + username)
+	if err = t.Execute(&w, vars, nil); err != nil {
+		return c.String(http.StatusNoContent, "No content")
+	}
+	return c.HTML(http.StatusOK, w.String())
+}
+
+func UpdateRoomSetting(c echo.Context) error {
+	if c.FormValue("resetStreamKey") != "" {
+
+	} else if c.FormValue("save") != "" {
+
+	}
+	redirect := "/" + c.Param("roomID") + "/setting"
+	return c.Redirect(http.StatusMovedPermanently, redirect)
 }
 
 func ServeWebSocket(c echo.Context) error {

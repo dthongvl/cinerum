@@ -11,4 +11,5 @@ var (
 	CookieStore = sessions.NewCookieStore([]byte("something-very-secret"))
 	View = jet.NewHTMLSet("./template")
 	ChatHub = chat.NewHub()
+	StreamURL = "rtmp://localhost:1935/app/"
 )

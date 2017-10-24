@@ -1,11 +1,11 @@
-<nav id="myNav" class="navbar navbar-expand-md navbar-fixed-top navbar-dark bg-dark main-nav">
+<nav id="myNav" class="navbar navbar-expand-md navbar-fixed-top navbar-light bg-light main-nav">
     <div class="container">
         <ul class="nav navbar-nav">
             <li class="nav-item active">
-                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/">home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/events">Events</a>
+                <a class="nav-link" href="/events">events</a>
             </li>
         </ul>
         <ul class="nav navbar-nav mx-auto">
@@ -21,15 +21,15 @@
             </li>
             {{ else }}
             <li class="nav-item">
-                <a class="nav-link" href="/me">My Room</a>
+                <a class="nav-link" href="/me">my room</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ username }}</a>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="/{{ username }}">Me</a>
-                  <a class="dropdown-item" href="/{{ username }}/setting">Setting</a>
+                  <a class="dropdown-item" href="/{{ username }}">me</a>
+                  <a class="dropdown-item" href="/{{ username }}/setting">setting</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="/logout">Logout</a>
+                  <a class="dropdown-item" href="/logout">logout</a>
                 </div>
             </li>
             {{ end }}
