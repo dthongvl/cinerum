@@ -11,7 +11,7 @@ type User struct {
 	Password    string `db:"password"`
 	IsDisplay   int    `db:"is_display"`
 	IsPrivate   int    `db:"is_private"`
-	LiveAt      string `db:"live_at"`
+	LiveAt      int64    `db:"live_at"`
 	StreamTitle string `db:"stream_title"`
 	StreamKey   string `db:"stream_key"`
 }
@@ -19,6 +19,9 @@ type User struct {
 var (
 	SignInQuery              = "SELECT room_id FROM users WHERE room_id='%s' AND password='%s'"
 	GetStreamSettingQuery    = "SELECT is_display, is_private, stream_title, stream_key FROM users WHERE room_id='%s'"
+	GetStreamInfoQuery       = "SELECT stream_title, live_at FROM users WHERE room_id='%s'"
 	UpdateStreamSettingQuery = "UPDATE users SET is_display=%d, is_private=%d, stream_title='%s' WHERE room_id='%s'"
 	UpdateStreamKeyQuery     = "UPDATE users SET stream_key='%s' WHERE room_id='%s'"
+	GetStreamKeyQuery        = "SELECT room_id, stream_key FROM users WHERE stream_key='%s'"
+	UpdateLiveAtQuery        = "UPDATE users SET live_at=%d WHERE stream_key='%s'"
 )

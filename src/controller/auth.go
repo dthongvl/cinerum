@@ -15,7 +15,7 @@ func Login(c echo.Context) error {
 	username := c.FormValue("username")
 	password := c.FormValue("password")
 	roomID, err := repository.SignIn(username, password)
-	if err != nil {
+	if err == nil {
 		log.Info(username + " login success")
 		saveSession(c, roomID)
 	}

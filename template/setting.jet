@@ -16,6 +16,11 @@
                 {{ message }}
             </div>
             {{ end }}
+            {{ if errorMessage != "" }}
+            <div class="alert alert-danger" role="alert">
+                {{ errorMessage }}
+            </div>
+            {{ end }}
             <form method="POST">
                 <div class="form-group">
                     <label for="streamTitle">stream title</label>
@@ -57,7 +62,7 @@
                         <input value="{{ settings.StreamKey }}" type="text" class="form-control" id="streamKey"
                                aria-describedby="streamKeyHelp" readonly>
                         <span class="input-group-btn">
-                    <button class="btn btn-secondary" type="submit" name="resetStreamKey" value="true">reset</button>
+                    <button class="btn btn-secondary" type="submit" name="renewStreamKey" value="true">renew</button>
                 </span>
                     </div>
                     <small id="streamKeyHelp" class="form-text text-muted">use this key to stream using FMLE or OBS.

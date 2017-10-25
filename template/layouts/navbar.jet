@@ -21,12 +21,11 @@
             </li>
             {{ else }}
             <li class="nav-item">
-                <a class="nav-link" href="/me">my room</a>
+                <a class="nav-link" href="/{{ user.RoomID }}">my room</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ user.RoomID }}</a>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="/{{ user.RoomID }}">me</a>
                   <a class="dropdown-item" href="/{{ user.RoomID }}/setting">setting</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="/logout">logout</a>

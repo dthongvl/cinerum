@@ -11,6 +11,7 @@ import (
 	"github.com/CloudyKit/jet"
 	"github.com/dthongvl/cinerum/src/core/global"
 	"github.com/dthongvl/cinerum/src/repository"
+	"strings"
 )
 
 var upgrader = websocket.Upgrader{
@@ -21,7 +22,7 @@ var upgrader = websocket.Upgrader{
 func JoinRoom(c echo.Context) error {
 	user := getSession(c)
 	roomID := c.Param("roomID")
-	streamSetting, err := repository.GetStreamSetting(roomID)
+	streamInfo, err := repository.GetStreamInfo(roomID)
 	if err != nil {
 		log.Println("room not found")
 		return errorPage(c, user, "room not found")
@@ -33,7 +34,8 @@ func JoinRoom(c echo.Context) error {
 	var w bytes.Buffer
 	vars := make(jet.VarMap)
 	vars.Set("roomID", roomID)
-	vars.Set("roomTitle", streamSetting.StreamTitle)
+	vars.Set("roomTitle", streamInfo.StreamTitle)
+	vars.Set("liveAt", streamInfo.LiveAt)
 	vars.Set("user", user)
 	if err = t.Execute(&w, vars, nil); err != nil {
 		return c.String(http.StatusNoContent, "No content")
@@ -59,11 +61,17 @@ func RoomSetting(c echo.Context) error {
 		return c.Redirect(http.StatusMovedPermanently, referer)
 	}
 	message := getFlash(c)
+	errorMessage := ""
+	if !strings.Contains(message, "success") {
+		errorMessage = message
+		message = ""
+	}
 	vars := make(jet.VarMap)
 	vars.Set("user", user)
 	vars.Set("streamURL", global.StreamURL)
 	vars.Set("settings", streamSetting)
 	vars.Set("message", message)
+	vars.Set("errorMessage", errorMessage)
 	if err = t.Execute(&w, vars, nil); err != nil {
 		return c.String(http.StatusNoContent, "No content")
 	}
@@ -78,10 +86,19 @@ func UpdateRoomSetting(c echo.Context) error {
 		log.Println("change another room setting denied")
 		return errorPage(c, user, "you do not have permission to change")
 	}
-	if c.FormValue("resetStreamKey") != "" {
-		newStreamKey := "live_" + roomID + "_" + randomString(12)
-		repository.UpdateStreamKey(user.RoomID, newStreamKey)
-		addFlash(c, "reset successfully")
+	if c.FormValue("renewStreamKey") != "" {
+		streamInfo, err := repository.GetStreamInfo(roomID)
+		if err != nil {
+			log.Println("room not found")
+			return errorPage(c, user, "room not found")
+		}
+		if streamInfo.LiveAt != 0 {
+			addFlash(c, "cannot renew stream key while streaming")
+		} else {
+			newStreamKey := "live_" + roomID + "_" + randomString(12)
+			repository.UpdateStreamKey(user.RoomID, newStreamKey)
+			addFlash(c, "reset successfully")
+		}
 	} else if c.FormValue("save") != "" {
 		isDisplay := 0
 		if c.FormValue("isDisplay") == "on" {
