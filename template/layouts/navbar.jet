@@ -24,10 +24,10 @@
                 <a class="nav-link" href="/me">my room</a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ user.Username }}</a>
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ user.RoomID }}</a>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="/{{ user.Username }}">me</a>
-                  <a class="dropdown-item" href="/{{ user.Username }}/setting">setting</a>
+                  <a class="dropdown-item" href="/{{ user.RoomID }}">me</a>
+                  <a class="dropdown-item" href="/{{ user.RoomID }}/setting">setting</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="/logout">logout</a>
                 </div>

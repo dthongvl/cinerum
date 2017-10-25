@@ -6,7 +6,7 @@
 <title>{{ roomTitle }}</title>
 <script>
     var roomID = "{{ roomID }}";
-    var username = "{{ user.Username }}";
+    var username = "{{ user.RoomID }}";
 </script>
 {{ end }}
 {{ block body() }}

@@ -65,7 +65,7 @@ func (db *Database) Insert(query string) (int64, error) {
 	return result.LastInsertId()
 }
 
-func (db *Database) Delete(query string) (int64, error) {
+func (db *Database) UpdateDelete(query string) (int64, error) {
 	result, err := db.connection.Exec(query)
 	if err != nil {
 		log.WithField("query", query).Error(err)
