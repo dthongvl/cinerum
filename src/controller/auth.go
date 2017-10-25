@@ -5,6 +5,7 @@ import (
 	"net/http"
 	log "github.com/sirupsen/logrus"
 	"github.com/dthongvl/cinerum/src/core/global"
+	"github.com/dthongvl/cinerum/src/repository"
 )
 
 func Register(c echo.Context) error {
@@ -14,8 +15,8 @@ func Register(c echo.Context) error {
 func Login(c echo.Context) error {
 	username := c.FormValue("username")
 	password := c.FormValue("password")
-	log.Info("NEW LOGIN: " + username + " - " + password)
-	if password == "123456" {
+	loginSuccess := repository.SignIn(username, password)
+	if loginSuccess {
 		log.Info(username + " LOGIN SUCCESS")
 		cookie, err := global.CookieStore.Get(c.Request(), global.SessionName)
 		if err != nil {

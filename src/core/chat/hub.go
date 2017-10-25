@@ -5,7 +5,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/dthongvl/cinerum/src/model"
+	"github.com/dthongvl/cinerum/src/repository/model"
 )
 
 type Hub struct {

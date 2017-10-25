@@ -7,3 +7,4 @@ import:
 - package: github.com/sirupsen/logrus
 - package: github.com/gorilla/sessions
 - package: github.com/CloudyKit/jet
+- package: github.com/mattn/go-sqlite3

@@ -4,6 +4,7 @@ import (
 	"github.com/CloudyKit/jet"
 	"github.com/gorilla/sessions"
 	"github.com/dthongvl/cinerum/src/core/chat"
+	"github.com/dthongvl/cinerum/src/core/database"
 )
 
 var (
@@ -12,4 +13,5 @@ var (
 	View = jet.NewHTMLSet("./template")
 	ChatHub = chat.NewHub()
 	StreamURL = "rtmp://localhost:1935/app/"
+	Data = database.Database{}
 )

@@ -10,6 +10,8 @@ func main() {
 	log.SetLevel(log.DebugLevel)
 	global.View.SetDevelopmentMode(true)
 	global.ChatHub.Run()
+	global.Data.Connect()
+	global.Data.Migrate("schema.sql")
 	cinerum := app.New()
 	cinerum.RegisterRoute()
 	cinerum.Start()
