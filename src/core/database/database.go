@@ -35,7 +35,7 @@ func (db *Database) Migrate(schemaFile string) error {
 	return nil
 }
 
-func (db *Database) Select(model []interface{}, query string) error {
+func (db *Database) Select(model interface{}, query string) error {
 	err := db.connection.Select(model, query)
 	if err != nil {
 		log.WithField("query", query).Error(err)

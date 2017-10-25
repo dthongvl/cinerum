@@ -1,0 +1,15 @@
+{{ extends "layouts/base.jet" }}
+
+{{ block header() }}
+<title>Cinerum</title>
+<link type="text/css" rel="stylesheet" href="/static/css/index.css">
+<script src="/static/js/index.js"></script>
+{{ end }}
+
+{{ block body() }}
+<div class="container">
+{{range value := events}}
+{{ value.StreamTitle }} live at {{ value.LiveAt }}
+{{end}}
+</div>
+{{ end }}

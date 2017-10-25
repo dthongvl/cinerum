@@ -55,3 +55,10 @@ func UpdateLiveAt(roomID string, liveAt int64) {
 	query := fmt.Sprintf(model.UpdateLiveAtQuery, liveAt, roomID)
 	global.Data.UpdateDelete(query)
 }
+
+func GetEvents() []model.User {
+	query := model.GetEventsQuery
+	user := []model.User{}
+	global.Data.Select(&user, query)
+	return user
+}

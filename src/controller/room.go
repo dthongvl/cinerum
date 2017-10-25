@@ -50,7 +50,7 @@ func RoomSetting(c echo.Context) error {
 		return errorPage(c, user, "you do not have permission to access")
 	}
 
-	t, err := global.View.GetTemplate("setting.jet")
+	t, err := global.View.GetTemplate("settings.jet")
 	if err != nil {
 		return c.String(http.StatusNoContent, "No content")
 	}
@@ -116,7 +116,7 @@ func UpdateRoomSetting(c echo.Context) error {
 		addFlash(c, "update successfully")
 	}
 
-	redirect := "/" + roomID + "/setting"
+	redirect := "/" + roomID + "/settings"
 	return c.Redirect(http.StatusMovedPermanently, redirect)
 }
 
