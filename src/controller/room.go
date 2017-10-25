@@ -10,6 +10,8 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/CloudyKit/jet"
 	"github.com/dthongvl/cinerum/src/core/global"
+	"github.com/dthongvl/cinerum/src/repository/model"
+	"github.com/dthongvl/cinerum/src/repository"
 )
 
 var upgrader = websocket.Upgrader{
@@ -17,18 +19,16 @@ var upgrader = websocket.Upgrader{
 	WriteBufferSize: 1024,
 }
 
-func getSession(c echo.Context) (isLoggedIn bool, username string) {
+func getSession(c echo.Context) *model.UserCookie {
 	cookie, err := global.CookieStore.Get(c.Request(), global.SessionName)
 	if err != nil {
 		log.Error(err)
 	}
-	username, ok := cookie.Values["username"].(string);
-	if !ok || username == "" {
-		log.Info("User is not authenticated")
-		return false, ""
+	user, ok := cookie.Values["user"].(*model.UserCookie)
+	if !ok {
+		return &model.UserCookie{}
 	}
-	log.Info("User is logged in")
-	return true, username
+	return user
 }
 
 func JoinRoom(c echo.Context) error {
@@ -38,11 +38,10 @@ func JoinRoom(c echo.Context) error {
 	}
 	var w bytes.Buffer
 	vars := make(jet.VarMap)
-	isLoggedIn, username := getSession(c)
+	user := getSession(c)
 	vars.Set("roomID", c.Param("roomID"))
 	vars.Set("roomTitle", "Room cua " + c.Param("roomID"))
-	vars.Set("username", username)
-	vars.Set("isLoggedIn", isLoggedIn)
+	vars.Set("user", user)
 	if err = t.Execute(&w, vars, nil); err != nil {
 		return c.String(http.StatusNoContent, "No content")
 	}
@@ -55,13 +54,16 @@ func RoomSetting(c echo.Context) error {
 		return c.String(http.StatusNoContent, "No content")
 	}
 	var w bytes.Buffer
+	user := getSession(c)
+	streamSetting, err := repository.GetStreamSetting(user.Id)
+	if err != nil {
+		referer := c.Request().Header.Get("Referer")
+		return c.Redirect(http.StatusMovedPermanently, referer)
+	}
 	vars := make(jet.VarMap)
-	isLoggedIn, username := getSession(c)
-	vars.Set("isLoggedIn", isLoggedIn)
-	vars.Set("username", username)
-	vars.Set("streamTitle", "title")
+	vars.Set("user", user)
 	vars.Set("streamURL", global.StreamURL)
-	vars.Set("streamKey", "key" + username)
+	vars.Set("settings", streamSetting)
 	if err = t.Execute(&w, vars, nil); err != nil {
 		return c.String(http.StatusNoContent, "No content")
 	}
@@ -85,11 +87,11 @@ func ServeWebSocket(c echo.Context) error {
 		return err
 	}
 
-	isLoggedIn, username := getSession(c)
+	user := getSession(c)
 
 	client := &chat.Client{
-		Username: username,
-		IsLoggedIn: isLoggedIn,
+		Username: user.Username,
+		IsLoggedIn: user.IsLoggedIn,
 		ChatHub: global.ChatHub,
 		Conn: conn,
 		Send: make(chan []byte, 256),

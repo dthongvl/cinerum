@@ -5,6 +5,9 @@ import (
 	"github.com/gorilla/sessions"
 	"github.com/dthongvl/cinerum/src/core/chat"
 	"github.com/dthongvl/cinerum/src/core/database"
+	"encoding/gob"
+	"github.com/dthongvl/cinerum/src/repository/model"
+	log "github.com/sirupsen/logrus"
 )
 
 var (
@@ -15,3 +18,12 @@ var (
 	StreamURL = "rtmp://localhost:1935/app/"
 	Data = database.Database{}
 )
+
+func Init() {
+	log.SetLevel(log.DebugLevel)
+	View.SetDevelopmentMode(true)
+	ChatHub.Run()
+	Data.Connect()
+	Data.Migrate("schema.sql")
+	gob.Register(&model.UserCookie{})
+}

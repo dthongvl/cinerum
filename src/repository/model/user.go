@@ -1,13 +1,23 @@
 package model
 
-type User struct {
-	Id int `db:"id"`
-	Username string `db:"username"`
-	Password string `db:"password"`
-	LiveAt string `db:"live_at"`
-	StreamTitle string `db:"stream_title"`
-	StreamKey string `db:"stream_key"`
+type UserCookie struct {
+	IsLoggedIn bool
+	Id int
+	Username string
 }
 
-var SignInQuery = "SELECT username FROM users WHERE username='%s' AND password='%s'"
-//var GetStreamSettingQuery = "SELECT stream_title, stream_key FROM users WHERE username='%s'"
+type User struct {
+	Id          int    `db:"id"`
+	Username    string `db:"username"`
+	Password    string `db:"password"`
+	IsDisplay   int   `db:"is_display"`
+	IsPrivate   int   `db:"is_private"`
+	LiveAt      string `db:"live_at"`
+	StreamTitle string `db:"stream_title"`
+	StreamKey   string `db:"stream_key"`
+}
+
+var (
+	SignInQuery           = "SELECT id, username FROM users WHERE username='%s' AND password='%s'"
+	GetStreamSettingQuery = "SELECT is_display, is_private, stream_title, stream_key FROM users WHERE id=%d"
+)

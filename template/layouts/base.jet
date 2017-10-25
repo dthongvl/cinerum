@@ -20,7 +20,7 @@
 <body>
 {{ include "layouts/navbar.jet" }}
 {{ yield body() }}
-{{ if !isLoggedIn }}
+{{ if !user.IsLoggedIn }}
 {{ include "layouts/modal.jet" }}
 {{ end }}
 </body>

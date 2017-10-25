@@ -15,11 +15,14 @@ func Index(c echo.Context) error {
 		log.Println(err)
 		return c.String(http.StatusNoContent, "No content")
 	}
-	var w bytes.Buffer
+
+	user := getSession(c)
+
 	vars := make(jet.VarMap)
-	isLoggedIn, username := getSession(c)
-	vars.Set("isLoggedIn", isLoggedIn)
-	vars.Set("username", username)
+	vars.Set("user", user)
+
+	var w bytes.Buffer
+
 	if err = t.Execute(&w, vars, nil); err != nil {
 		log.Println(err)
 		return c.String(http.StatusNoContent, "No content")

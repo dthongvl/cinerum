@@ -12,22 +12,22 @@
             <li class="nav-item"><a class="nav-link" href="#">Cinerum</a></li>
         </ul>
         <ul class="nav navbar-nav">
-            {{ if !isLoggedIn }}
+            {{ if !user.IsLoggedIn }}
             <li class="nav-item" style="margin-right:10px">
-                <button id="loginBtn" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Sign In</button>
+                <button id="loginBtn" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">login</button>
             </li>
             <li class="nav-item">
-                <button id="signUpBtn" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Sign Up</button>
+                <button id="signUpBtn" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">register</button>
             </li>
             {{ else }}
             <li class="nav-item">
                 <a class="nav-link" href="/me">my room</a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ username }}</a>
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ user.Username }}</a>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="/{{ username }}">me</a>
-                  <a class="dropdown-item" href="/{{ username }}/setting">setting</a>
+                  <a class="dropdown-item" href="/{{ user.Username }}">me</a>
+                  <a class="dropdown-item" href="/{{ user.Username }}/setting">setting</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="/logout">logout</a>
                 </div>

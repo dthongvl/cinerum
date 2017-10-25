@@ -24,7 +24,7 @@ func (app *App) Init() {
 	app.server.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "method=${method}, uri=${uri}, status=${status}, time=${latency_human}\n",
 	}))
-	app.server.Use(middleware.Recover())
+	//app.server.Use(middleware.Recover())
 }
 
 func (app *App) RegisterRoute() {

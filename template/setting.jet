@@ -14,23 +14,24 @@
         <form method="POST">
         <div class="form-group">
             <label for="streamTitle">stream title</label>
-            <input value="{{ streamTitle }}" name="streamTitle" type="text" class="form-control" id="streamTitle">
+            <input value="{{ settings.StreamTitle }}" name="streamTitle" type="text" class="form-control" id="streamTitle">
         </div>
         <div class="form-check">
             <label class="form-check-label">
-                <input name="isShowInEventList" type="checkbox" class="form-check-input"
-                       aria-describedby="showEventHelp">
+                <input name="isDisplay" type="checkbox" class="form-check-input"
+                       aria-describedby="isDisplayHelp" {{ if settings.IsDisplay }}checked{{ end }}>
                 show in event list
             </label>
-            <small id="showEventHelp" class="form-text text-muted">allow your live streams to appear in event list.
+            <small id="isDisplayHelp" class="form-text text-muted">allow your live streams to appear in event list.
             </small>
         </div>
         <div class="form-check">
             <label class="form-check-label">
-                <input name="isPrivate" type="checkbox" class="form-check-input" aria-describedby="roomPrivateHelp">
+                <input name="isPrivate" type="checkbox" class="form-check-input"
+                aria-describedby="isPrivateHelp" {{ if settings.IsPrivate }}checked{{ end }}>
                 make room private
             </label>
-            <small id="roomPrivateHelp" class="form-text text-muted">only signed in users can watch your streams.
+            <small id="isPrivateHelp" class="form-text text-muted">only signed in users can watch your streams.
             </small>
 
         </div>
@@ -45,7 +46,7 @@
         <div class="form-group">
             <label for="streamKey">stream key</label>
             <div class="input-group">
-                <input value="{{ streamKey }}" type="text" class="form-control" id="streamKey"
+                <input value="{{ settings.StreamKey }}" type="text" class="form-control" id="streamKey"
                        aria-describedby="streamKeyHelp" readonly>
                 <span class="input-group-btn">
                     <button class="btn btn-secondary" type="submit" name="resetStreamKey" value="true">reset</button>

@@ -23,3 +23,4 @@ ffmpeg -re -i [fileName] -strict experimental -c:v libx264 -preset veryfast -max
 ### TODO
 - [ ] Adjust chat box and player size
 - [ ] Show auth modal when unauthenticated user chat
+- [ ] Register feature
