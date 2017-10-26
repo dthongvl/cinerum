@@ -15,6 +15,5 @@
 
 .idea
 vendor
-glide.lock
+Gopkg.lock
 cinerum
-template/*.go

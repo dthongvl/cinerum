@@ -2,13 +2,15 @@
 
 ### Dependencies
 
-- [Golang](http://golang.org/) with [Glide](https://github.com/Masterminds/glide)
+- [Golang](http://golang.org/) with [Dep](https://github.com/golang/dep)
 - [Nginx](https://nginx.org/) with [nginx-rtmp-module](https://github.com/arut/nginx-rtmp-module)
 - FFmpeg
 
 ### Preconfigure:
 - Run
-> glide install
+```
+dep ensure
+```
 - Replace **nginx.conf**
 
 ### To test
