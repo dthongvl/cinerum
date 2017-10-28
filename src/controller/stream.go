@@ -1,10 +1,11 @@
 package controller
 
 import (
-	"github.com/labstack/echo"
 	"net/http"
-	"github.com/dthongvl/cinerum/src/repository"
 	"time"
+
+	"github.com/dthongvl/cinerum/src/repository"
+	"github.com/labstack/echo"
 )
 
 func OnPublish(c echo.Context) error {

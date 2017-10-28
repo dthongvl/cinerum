@@ -1,15 +1,16 @@
 package controller
 
 import (
-	log "github.com/sirupsen/logrus"
-	"math/rand"
-	"time"
-	"net/http"
-	"github.com/CloudyKit/jet"
 	"bytes"
+	"math/rand"
+	"net/http"
+	"time"
+
+	"github.com/CloudyKit/jet"
 	"github.com/dthongvl/cinerum/src/core/global"
-	"github.com/labstack/echo"
 	"github.com/dthongvl/cinerum/src/repository/model"
+	"github.com/labstack/echo"
+	log "github.com/sirupsen/logrus"
 )
 
 var random = rand.New(rand.NewSource(time.Now().UnixNano()))
@@ -98,7 +99,7 @@ func getFlash(c echo.Context) string {
 	flashes := cookie.Flashes()
 	lastFlash := ""
 	if len(flashes) > 0 {
-		lastFlash = flashes[len(flashes) - 1].(string)
+		lastFlash = flashes[len(flashes)-1].(string)
 	}
 	cookie.Save(c.Request(), c.Response())
 	return lastFlash

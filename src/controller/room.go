@@ -4,14 +4,15 @@ import (
 	"bytes"
 	"net/http"
 
+	"strings"
+
+	"github.com/CloudyKit/jet"
 	"github.com/dthongvl/cinerum/src/core/chat"
+	"github.com/dthongvl/cinerum/src/core/global"
+	"github.com/dthongvl/cinerum/src/repository"
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo"
 	log "github.com/sirupsen/logrus"
-	"github.com/CloudyKit/jet"
-	"github.com/dthongvl/cinerum/src/core/global"
-	"github.com/dthongvl/cinerum/src/repository"
-	"strings"
 )
 
 var upgrader = websocket.Upgrader{

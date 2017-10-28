@@ -1,12 +1,13 @@
 package controller
 
 import (
-	log "github.com/sirupsen/logrus"
-	"github.com/labstack/echo"
-	"net/http"
 	"bytes"
-	"github.com/dthongvl/cinerum/src/core/global"
+	"net/http"
+
 	"github.com/CloudyKit/jet"
+	"github.com/dthongvl/cinerum/src/core/global"
+	"github.com/labstack/echo"
+	log "github.com/sirupsen/logrus"
 )
 
 func Index(c echo.Context) error {

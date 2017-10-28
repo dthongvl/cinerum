@@ -1,10 +1,11 @@
 package controller
 
 import (
-	"github.com/labstack/echo"
 	"net/http"
-	log "github.com/sirupsen/logrus"
+
 	"github.com/dthongvl/cinerum/src/repository"
+	"github.com/labstack/echo"
+	log "github.com/sirupsen/logrus"
 )
 
 func Register(c echo.Context) error {

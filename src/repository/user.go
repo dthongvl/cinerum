@@ -1,10 +1,11 @@
 package repository
 
 import (
+	"errors"
+	"fmt"
+
 	"github.com/dthongvl/cinerum/src/core/global"
 	"github.com/dthongvl/cinerum/src/repository/model"
-	"fmt"
-	"errors"
 )
 
 func SignIn(roomID string, password string) (string, error) {

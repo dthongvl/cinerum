@@ -1,22 +1,23 @@
 package global
 
 import (
+	"encoding/gob"
+
 	"github.com/CloudyKit/jet"
-	"github.com/gorilla/sessions"
 	"github.com/dthongvl/cinerum/src/core/chat"
 	"github.com/dthongvl/cinerum/src/core/database"
-	"encoding/gob"
 	"github.com/dthongvl/cinerum/src/repository/model"
+	"github.com/gorilla/sessions"
 	log "github.com/sirupsen/logrus"
 )
 
 var (
 	SessionName = "auth"
 	CookieStore = sessions.NewCookieStore([]byte("something-very-secret"))
-	View = jet.NewHTMLSet("./template")
-	ChatHub = chat.NewHub()
-	StreamURL = "rtmp://localhost:1935/app/"
-	Data = database.Database{}
+	View        = jet.NewHTMLSet("./template")
+	ChatHub     = chat.NewHub()
+	StreamURL   = "rtmp://localhost:1935/app/"
+	Data        = database.Database{}
 )
 
 func Init() {

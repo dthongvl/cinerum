@@ -1,13 +1,14 @@
 package controller
 
 import (
-	"github.com/labstack/echo"
-	"net/http"
-	"github.com/CloudyKit/jet"
-	log "github.com/sirupsen/logrus"
-	"github.com/dthongvl/cinerum/src/core/global"
 	"bytes"
+	"net/http"
+
+	"github.com/CloudyKit/jet"
+	"github.com/dthongvl/cinerum/src/core/global"
 	"github.com/dthongvl/cinerum/src/repository"
+	"github.com/labstack/echo"
+	log "github.com/sirupsen/logrus"
 )
 
 func Events(c echo.Context) error {

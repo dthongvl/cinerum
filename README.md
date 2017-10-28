@@ -11,13 +11,14 @@
 ```
 dep ensure
 ```
-- Replace **nginx.conf**
+- *Linux*: Replace **nginx.conf**
 
 ### To test
-- Run nginx (only when reset computer)
-- Run command to push stream:
+- Run nginx (everytime reset computer)
+    - *Window*: run **nginx.exe** in nginx-window folder
+- Run ffmpeg to push stream:
 ```
-ffmpeg -re -i [fileName] -strict experimental -c:v libx264 -preset veryfast -maxrate 3000k -bufsize 6000k -pix_fmt yuv420p -g 50 -c:a aac -b:a 160k -ac 2 -ar 44100 -f flv rtmp://localhost:1935/app/key[roomName]
+ffmpeg -re -i [fileName] -strict experimental -c:v libx264 -preset veryfast -maxrate 3000k -bufsize 6000k -pix_fmt yuv420p -g 50 -c:a aac -b:a 160k -ac 2 -ar 44100 -f flv rtmp://localhost:1935/app/[streamKey]
 ```
 - Run main.go
 - [Enjoy](http://localhost:3000)
@@ -26,3 +27,4 @@ ffmpeg -re -i [fileName] -strict experimental -c:v libx264 -preset veryfast -max
 - [ ] Adjust chat box and player size
 - [ ] Show auth modal when unauthenticated user chat
 - [ ] Register feature
+- [ ] Video player

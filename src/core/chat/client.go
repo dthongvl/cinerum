@@ -4,8 +4,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/gorilla/websocket"
 	"github.com/dthongvl/cinerum/src/repository/model"
+	"github.com/gorilla/websocket"
 )
 
 const (
