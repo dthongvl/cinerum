@@ -17,3 +17,5 @@
 vendor
 Gopkg.lock
 cinerum
+nginx-window/live/
+nginx-window/logs/
