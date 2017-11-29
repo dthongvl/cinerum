@@ -1,5 +1,4 @@
 # Binaries for programs and plugins
-*.exe
 *.dll
 *.so
 *.dylib
@@ -19,3 +18,4 @@ Gopkg.lock
 cinerum
 nginx-window/live/
 nginx-window/logs/
+!nginx-window/logs/.gitkeep
