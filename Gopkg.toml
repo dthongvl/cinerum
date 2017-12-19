@@ -31,9 +31,6 @@
   name = "github.com/gorilla/websocket"
 
 [[constraint]]
-  name = "github.com/jmoiron/sqlx"
-
-[[constraint]]
   name = "github.com/labstack/echo"
   version = "~3.1.0"
 
@@ -41,4 +38,5 @@
   name = "github.com/mattn/go-sqlite3"
 
 [[constraint]]
-  name = "github.com/sirupsen/logrus"
+  name = "github.com/jinzhu/gorm"
+  version = "1.0.0"

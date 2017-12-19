@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/dthongvl/cinerum/src/core/app"
-	"github.com/dthongvl/cinerum/src/core/global"
+	"github.com/dthongvl/cinerum/src/module/app"
+	"github.com/dthongvl/cinerum/src/module/global"
 )
 
 func main() {
 	global.Init()
 	cinerum := app.New()
 	cinerum.RegisterRoute()
-	cinerum.Start()
+	cinerum.Start("3000")
 }

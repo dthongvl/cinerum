@@ -14,10 +14,10 @@
         <ul class="nav navbar-nav">
             {{ if !user.IsLoggedIn }}
             <li class="nav-item" style="margin-right:10px">
-                <button id="loginBtn" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">login</button>
+                <button id="loginBtn" class="btn btn-primary" data-toggle="modal" data-target="#authModal">login</button>
             </li>
             <li class="nav-item">
-                <button id="signUpBtn" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">register</button>
+                <button id="signUpBtn" class="btn btn-primary" data-toggle="modal" data-target="#authModal">register</button>
             </li>
             {{ else }}
             <li class="nav-item">

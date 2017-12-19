@@ -4,11 +4,11 @@ import (
 	"encoding/gob"
 
 	"github.com/CloudyKit/jet"
-	"github.com/dthongvl/cinerum/src/core/chat"
-	"github.com/dthongvl/cinerum/src/core/database"
+	"github.com/dthongvl/cinerum/src/module/chat"
 	"github.com/dthongvl/cinerum/src/repository/model"
 	"github.com/gorilla/sessions"
 	log "github.com/sirupsen/logrus"
+	"github.com/dthongvl/cinerum/src/module/database"
 )
 
 var (
@@ -17,14 +17,14 @@ var (
 	View        = jet.NewHTMLSet("./template")
 	ChatHub     = chat.NewHub()
 	StreamURL   = "rtmp://localhost:1935/app/"
-	Data        = database.Database{}
+	Database    = database.Database{}
 )
 
 func Init() {
 	log.SetLevel(log.DebugLevel)
 	View.SetDevelopmentMode(true)
 	ChatHub.Run()
-	Data.Connect()
-	Data.Migrate("schema.sql")
+	Database.Init()
+	Database.Migrate()
 	gob.Register(&model.UserCookie{})
 }

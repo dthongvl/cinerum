@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"github.com/CloudyKit/jet"
-	"github.com/dthongvl/cinerum/src/core/chat"
-	"github.com/dthongvl/cinerum/src/core/global"
+	"github.com/dthongvl/cinerum/src/module/chat"
+	"github.com/dthongvl/cinerum/src/module/global"
 	"github.com/dthongvl/cinerum/src/repository"
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo"
@@ -23,8 +23,8 @@ var upgrader = websocket.Upgrader{
 func JoinRoom(c echo.Context) error {
 	user := getSession(c)
 	roomID := c.Param("roomID")
-	streamInfo, err := repository.GetStreamInfo(roomID)
-	if err != nil {
+	streamInfo := repository.FindUser(roomID)
+	if streamInfo.RoomId == "" {
 		log.Println("room not found")
 		return errorPage(c, user, "room not found")
 	}
@@ -56,8 +56,8 @@ func RoomSetting(c echo.Context) error {
 		return c.String(http.StatusNoContent, "No content")
 	}
 	var w bytes.Buffer
-	streamSetting, err := repository.GetStreamSetting(user.RoomID)
-	if err != nil {
+	streamSetting := repository.FindUser(user.RoomID)
+	if streamSetting.RoomId == "" {
 		referer := c.Request().Header.Get("Referer")
 		return c.Redirect(http.StatusMovedPermanently, referer)
 	}
@@ -88,8 +88,8 @@ func UpdateRoomSetting(c echo.Context) error {
 		return errorPage(c, user, "you do not have permission to change")
 	}
 	if c.FormValue("renewStreamKey") != "" {
-		streamInfo, err := repository.GetStreamInfo(roomID)
-		if err != nil {
+		streamInfo := repository.FindUser(roomID)
+		if streamInfo.RoomId == "" {
 			log.Println("room not found")
 			return errorPage(c, user, "room not found")
 		}

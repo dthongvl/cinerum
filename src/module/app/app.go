@@ -7,7 +7,6 @@ import (
 )
 
 type App struct {
-	port   string
 	server *echo.Echo
 }
 
@@ -19,7 +18,6 @@ func New() *App {
 
 func (app *App) Init() {
 	app.server = echo.New()
-	app.port = "3000"
 
 	app.server.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "method=${method}, uri=${uri}, status=${status}, time=${latency_human}\n",
@@ -31,17 +29,20 @@ func (app *App) RegisterRoute() {
 	app.server.Static("/static", "static")
 	app.server.GET("/", controller.Index)
 	app.server.GET("/events", controller.Events)
+
 	app.server.POST("/register", controller.Register)
 	app.server.POST("/login", controller.Login)
 	app.server.GET("/logout", controller.Logout)
+
 	app.server.GET("/:roomID", controller.JoinRoom)
 	app.server.GET("/:roomID/settings", controller.RoomSetting)
 	app.server.POST("/:roomID/settings", controller.UpdateRoomSetting)
 	app.server.GET("/:roomID/ws", controller.ServeWebSocket)
+
 	app.server.POST("/on_publish", controller.OnPublish)
 	app.server.POST("/on_publish_done", controller.OnPublishDone)
 }
 
-func (app *App) Start() {
-	app.server.Logger.Fatal(app.server.Start(":" + app.port))
+func (app *App) Start(port string) {
+	app.server.Logger.Fatal(app.server.Start(":" + port))
 }

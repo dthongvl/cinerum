@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/CloudyKit/jet"
-	"github.com/dthongvl/cinerum/src/core/global"
+	"github.com/dthongvl/cinerum/src/module/global"
 	"github.com/dthongvl/cinerum/src/repository/model"
 	"github.com/labstack/echo"
 	log "github.com/sirupsen/logrus"

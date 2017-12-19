@@ -10,9 +10,9 @@ import (
 
 func OnPublish(c echo.Context) error {
 	streamKey := c.FormValue("name")
-	roomID, err := repository.CheckStreamKey(streamKey)
+	roomID := repository.CheckStreamKey(streamKey)
 
-	if err != nil {
+	if roomID == "" {
 		return c.String(http.StatusForbidden, "Access Denied")
 	}
 	repository.UpdateLiveAt(streamKey, time.Now().Unix())

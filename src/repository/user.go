@@ -1,65 +1,63 @@
 package repository
 
 import (
-	"errors"
-	"fmt"
-
-	"github.com/dthongvl/cinerum/src/core/global"
+	"github.com/dthongvl/cinerum/src/module/global"
 	"github.com/dthongvl/cinerum/src/repository/model"
 )
 
-func SignIn(roomID string, password string) (string, error) {
-	query := fmt.Sprintf(model.SignInQuery, roomID, password)
-	user := model.User{}
-	err := global.Data.SelectOne(&user, query)
-	return user.RoomID, err
+func SignIn(roomID string, password string) (string) {
+	var user model.User
+	global.Database.GetInstance().
+		Where("room_id = ? AND password = ?", roomID, password).
+		First(&user)
+	return user.RoomId
 }
 
-func GetStreamSetting(roomID string) (model.User, error) {
-	query := fmt.Sprintf(model.GetStreamSettingQuery, roomID)
-	user := model.User{}
-	err := global.Data.SelectOne(&user, query)
-	if err != nil {
-		return user, errors.New("stream setting not found")
-	}
-	return user, nil
-}
-
-func GetStreamInfo(roomID string) (model.User, error) {
-	query := fmt.Sprintf(model.GetStreamInfoQuery, roomID)
-	user := model.User{}
-	err := global.Data.SelectOne(&user, query)
-	if err != nil {
-		return user, errors.New("stream info not found")
-	}
-	return user, nil
+func FindUser(roomID string) (model.User) {
+	var user model.User
+	global.Database.GetInstance().
+		Where("room_id = ?", roomID).
+		First(&user)
+	return user
 }
 
 func UpdateStreamSetting(roomID string, isDisplay int, isPrivate int, streamTitle string) {
-	query := fmt.Sprintf(model.UpdateStreamSettingQuery, isDisplay, isPrivate, streamTitle, roomID)
-	global.Data.UpdateDelete(query)
+	global.Database.GetInstance().
+		Model(&model.User{}).
+		Where("room_id = ?", roomID).
+		Update(map[string]interface{}{
+		"is_display":   isDisplay,
+		"is_private":   isPrivate,
+		"stream_title": streamTitle,
+	})
 }
 
 func UpdateStreamKey(roomID string, newStreamKey string) {
-	query := fmt.Sprintf(model.UpdateStreamKeyQuery, newStreamKey, roomID)
-	global.Data.UpdateDelete(query)
+	global.Database.GetInstance().
+		Model(&model.User{}).
+		Where("room_id = ?", roomID).
+		Update("stream_key", newStreamKey)
 }
 
-func CheckStreamKey(streamKey string) (string, error) {
-	query := fmt.Sprintf(model.GetStreamKeyQuery, streamKey)
-	user := model.User{}
-	err := global.Data.SelectOne(&user, query)
-	return user.RoomID, err
+func CheckStreamKey(streamKey string) (string) {
+	var user model.User
+	global.Database.GetInstance().
+		Where("stream_key = ?", streamKey).
+		First(&user)
+	return user.RoomId
 }
 
 func UpdateLiveAt(roomID string, liveAt int64) {
-	query := fmt.Sprintf(model.UpdateLiveAtQuery, liveAt, roomID)
-	global.Data.UpdateDelete(query)
+	global.Database.GetInstance().
+		Model(&model.User{}).
+		Where("room_id = ?", roomID).
+		Update("live_at", liveAt)
 }
 
 func GetEvents() []model.User {
-	query := model.GetEventsQuery
-	user := []model.User{}
-	global.Data.Select(&user, query)
-	return user
+	var users []model.User
+	global.Database.GetInstance().
+		Where("live_at > 0 AND is_display = 1").
+		Find(&users)
+	return users
 }
