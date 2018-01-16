@@ -9,6 +9,7 @@ import (
 	"github.com/dthongvl/cinerum/src/repository"
 	"github.com/labstack/echo"
 	log "github.com/sirupsen/logrus"
+	"github.com/dthongvl/cinerum/src/model"
 )
 
 func Events(c echo.Context) error {
@@ -19,7 +20,18 @@ func Events(c echo.Context) error {
 	}
 
 	user := getSession(c)
-	events := repository.GetEvents()
+	streamingRooms := repository.GetStreamingRooms()
+
+	var events []model.Event
+	for _, room := range streamingRooms {
+		event := model.Event{
+			RoomId: room.RoomId,
+			StreamThumbnail: "",
+			StreamTitle: room.StreamTitle,
+			TotalOnline: global.ChatHub.GetTotalOnline(room.RoomId),
+		}
+		events = append(events, event)
+	}
 
 	vars := make(jet.VarMap)
 	vars.Set("user", user)

@@ -1,22 +1,28 @@
 $(document).ready(function () {
+    $('#message-input').click(function() {
+        if (username === "") {
+            $('#authModal').modal('show');
+            $('#message-input').blur();
+        }
+    });
+
     var options = {
         hls: {
             withCredentials: true
         }
     };
-
     videojs("room-video", {flash: options, html5: options});
 
     var conn = new WebSocket("ws://" + document.location.host + "/" + roomID + "/ws");
     conn.onopen = function (event) {
-        document.getElementById("message-input").addEventListener("keyup", function (event) {
-            event.preventDefault();
-            var messageInput = document.getElementById("message-input");
-            if (event.keyCode === 13) {
-                if (messageInput.value !== "\n") {
-                    chat(messageInput.value);
+        $('#message-input').keyup(function (keyup) {
+            keyup.preventDefault();
+            var messageInput = $('#message-input');
+            if (keyup.keyCode === 13) {
+                if (messageInput.val() !== "\n") {
+                    chat(messageInput.val());
                 }
-                messageInput.value = "";
+                messageInput.val("");
             }
         });
     };
@@ -46,14 +52,14 @@ $(document).ready(function () {
     function onChatCommand(message) {
         var li = document.createElement("li");
         li.className += 'list-group-item';
-        li.innerHTML = '<b style="color:' + getRandomColor() + '">' + message.username + ': </b><small>' + message.data + '</small>';
-        var chatBox = document.getElementById("chat-box");
-        chatBox.appendChild(li);
-        chatBox.scrollTop = chatBox.scrollHeight;
+        li.innerHTML = '<b style="color:' + getRandomColor() + '">' + message.username + ': </b><small style="word-wrap: break-word;">' + message.data + '</small>';
+        var chatBox = $('#chat-box');
+        chatBox.append(li);
+        chatBox.scrollTop(chatBox.prop('scrollHeight'));
     }
 
     function onUpdateTotalOnline(message) {
-        document.getElementById("total-online").innerText = message.data
+        $('#total-online').val(message.data)
     }
 
     function getRandomColor() {

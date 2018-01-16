@@ -71,7 +71,7 @@ func UpdateLiveAt(roomID string, liveAt int64) {
 		Update("live_at", liveAt)
 }
 
-func GetEvents() []model.User {
+func GetStreamingRooms() []model.User {
 	var users []model.User
 	global.Database.GetInstance().
 		Where("live_at > 0 AND is_display = 1").

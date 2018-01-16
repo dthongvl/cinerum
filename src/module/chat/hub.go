@@ -34,6 +34,13 @@ func (h *Hub) Register(client *Client) {
 	h.register <- client
 }
 
+func (h *Hub) GetTotalOnline(roomId string) int {
+	if _, ok := h.rooms[roomId]; ok {
+		return len(h.rooms[roomId])
+	}
+	return 0
+}
+
 func (h *Hub) Run() {
 	go func() {
 		for {
