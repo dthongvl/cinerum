@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/dthongvl/cinerum/src/repository/model"
+	"github.com/dthongvl/cinerum/src/model"
 	"github.com/gorilla/websocket"
 )
 

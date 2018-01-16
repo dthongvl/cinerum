@@ -3,7 +3,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Sign in</h5>
+                <h5 class="modal-title">Authenticate</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -25,20 +25,20 @@
                             <div class="form-group">
                                 <label for="username">Username</label>
                                 <input type="text" class="form-control" id="username" aria-describedby="emailHelp"
-                                       placeholder="Enter username" name="username">
+                                       placeholder="Enter username" name="username" required>
                             </div>
                             <div class="form-group">
                                 <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password" placeholder="Password"
-                                       name="password">
+                                       name="password" required>
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label">
                                     <input type="checkbox" class="form-check-input">
-                                    Check me out
+                                    Remember me
                                 </label>
                             </div>
-                            <button type="submit" class="btn btn-primary float-right" form="form-login">Go</button>
+                            <button type="submit" class="btn btn-primary float-right" form="form-login">Sign In</button>
                         </form>
                     </div>
                     <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
@@ -46,20 +46,26 @@
                             <div class="form-group">
                                 <label for="username">Username</label>
                                 <input type="text" class="form-control" id="username" aria-describedby="emailHelp"
-                                       placeholder="Enter username" name="username">
+                                       placeholder="Enter username" name="username" required>
                             </div>
                             <div class="form-group">
                                 <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password" placeholder="Password"
-                                       name="password">
+                                       name="password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" placeholder="Email"
+                                       name="email" required>
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input">
-                                    Check me out
+                                    <input type="checkbox" class="form-check-input" required>
+                                    Agree with license
                                 </label>
                             </div>
-                            <button type="submit" class="btn btn-primary float-right" form="form-register">Go</button>
+                            <button type="submit" class="btn btn-primary float-right" form="form-register">Register
+                            </button>
                         </form>
                     </div>
                 </div>

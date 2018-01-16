@@ -3,7 +3,7 @@ package database
 import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
-	"github.com/dthongvl/cinerum/src/repository/model"
+	"github.com/dthongvl/cinerum/src/model"
 )
 
 type Database struct {
@@ -24,6 +24,7 @@ func (db *Database) Migrate() {
 	user1 := &model.User{
 		RoomId: "dthongvl",
 		Password: "123456",
+		Email: "dthongvl@gmail.com",
 		IsDisplay: 1,
 		IsPrivate: 0,
 		LiveAt: 1,
@@ -35,6 +36,7 @@ func (db *Database) Migrate() {
 	user2 := &model.User{
 		RoomId: "hieuminh",
 		Password: "123456",
+		Email: "hieuminh@gmail.com",
 		IsDisplay: 0,
 		IsPrivate: 1,
 		LiveAt: 0,

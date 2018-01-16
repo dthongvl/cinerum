@@ -10,23 +10,26 @@
 </script>
 {{ end }}
 {{ block body() }}
-<div class="container-fluid">
+<div class="container">
     <div class="row">
-        <div class="col-2"></div>
-        <div class="col-7">
+        <div class="col-8">
         {{ if liveAt != 0 }}
-            <video autoplay id="room-video" width=640 height=480 class="video-js vjs-default-skin" controls>
+            <video autoplay id="room-video" width=640 height=480 class="mx-auto video-js vjs-default-skin" controls>
                 <source src="http://localhost:8080/live/{{ roomID }}/index.m3u8" type="application/x-mpegURL">
             </video>
+            <div class="room-title ml-5"> {{ roomTitle }} </div>
+            <div class="ml-5">0 online user</div>
         {{ else }}
             Room {{ roomID }} is not streaming
         {{ end }}
         </div>
-        <div class="col-3">
-            <ul id="chat-box">
-            <li><b>dthongvl: </b><small>ahihi</small></li>
-            </ul>
-            <textarea class="form-control" id="message-input" placeholder="Send a message.."></textarea>
+        <div class="col-4">
+            <div style="height: 480px">
+                <ul id="chat-box" class="list-group border">
+                </ul>
+                <textarea class="border border-dark form-control" id="message-input"
+                          placeholder="Send a message.." autofocus></textarea>
+            </div>
         </div>
     </div>
 </div>

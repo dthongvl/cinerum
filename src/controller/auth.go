@@ -9,7 +9,14 @@ import (
 )
 
 func Register(c echo.Context) error {
-	return c.String(http.StatusOK, "Register")
+	username := c.FormValue("username")
+	password := c.FormValue("password")
+	email := c.FormValue("email")
+	if !repository.IsUserExist(username, email) {
+		repository.Register(username, password, email)
+		saveSession(c, username)
+	}
+	return c.Redirect(http.StatusMovedPermanently, "/")
 }
 
 func Login(c echo.Context) error {
@@ -21,11 +28,11 @@ func Login(c echo.Context) error {
 		saveSession(c, roomID)
 	}
 	referer := c.Request().Header.Get("Referer")
-	return c.Redirect(http.StatusSeeOther, referer)
+	return c.Redirect(http.StatusMovedPermanently, referer)
 }
 
 func Logout(c echo.Context) error {
 	clearSession(c)
 	referer := c.Request().Header.Get("Referer")
-	return c.Redirect(http.StatusFound, referer)
+	return c.Redirect(http.StatusMovedPermanently, referer)
 }

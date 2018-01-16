@@ -2,7 +2,7 @@ package repository
 
 import (
 	"github.com/dthongvl/cinerum/src/module/global"
-	"github.com/dthongvl/cinerum/src/repository/model"
+	"github.com/dthongvl/cinerum/src/model"
 )
 
 func SignIn(roomID string, password string) (string) {
@@ -11,6 +11,23 @@ func SignIn(roomID string, password string) (string) {
 		Where("room_id = ? AND password = ?", roomID, password).
 		First(&user)
 	return user.RoomId
+}
+
+func IsUserExist(roomID string, email string) bool {
+	var user model.User
+	global.Database.GetInstance().
+		Where("room_id = ? OR email = ?", roomID, email).
+		First(&user)
+	return user.RoomId == roomID || user.Email == email
+}
+
+func Register(roomID string, password string, email string) {
+	user := model.User{
+		RoomId:   roomID,
+		Password: password,
+		Email:    email,
+	}
+	global.Database.GetInstance().Create(&user)
 }
 
 func FindUser(roomID string) (model.User) {

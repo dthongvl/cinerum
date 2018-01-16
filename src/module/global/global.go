@@ -5,7 +5,7 @@ import (
 
 	"github.com/CloudyKit/jet"
 	"github.com/dthongvl/cinerum/src/module/chat"
-	"github.com/dthongvl/cinerum/src/repository/model"
+	"github.com/dthongvl/cinerum/src/model"
 	"github.com/gorilla/sessions"
 	log "github.com/sirupsen/logrus"
 	"github.com/dthongvl/cinerum/src/module/database"

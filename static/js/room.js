@@ -11,8 +11,12 @@ $(document).ready(function () {
     conn.onopen = function (event) {
         document.getElementById("message-input").addEventListener("keyup", function (event) {
             event.preventDefault();
-            if (event.keyCode === 13 && document.getElementById("message-input").value !== "") {
-                chat();
+            var messageInput = document.getElementById("message-input");
+            if (event.keyCode === 13) {
+                if (messageInput.value !== "\n") {
+                    chat(messageInput.value);
+                }
+                messageInput.value = "";
             }
         });
     };
@@ -23,23 +27,33 @@ $(document).ready(function () {
     conn.onmessage = function (event) {
         console.log(event.data);
         var message = JSON.parse(event.data);
-        onChatCommand(message);
+        if (message.type === "message") {
+            onChatCommand(message);
+        } else if(message.type === "online") {
+            onUpdateTotalOnline(message)
+        }
     };
 
-    function chat() {
-        var messageInput = document.getElementById("message-input");
+    function chat(data) {
         conn.send(JSON.stringify({
-            data: messageInput.value,
+            data: data,
             username: username,
-            roomID: roomID
+            roomID: roomID,
+            type: "message"
         }));
-        messageInput.value = "";
     }
 
     function onChatCommand(message) {
         var li = document.createElement("li");
+        li.className += 'list-group-item';
         li.innerHTML = '<b style="color:' + getRandomColor() + '">' + message.username + ': </b><small>' + message.data + '</small>';
-        document.getElementById("chat-box").appendChild(li);
+        var chatBox = document.getElementById("chat-box");
+        chatBox.appendChild(li);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function onUpdateTotalOnline(message) {
+        document.getElementById("total-online").innerText = message.data
     }
 
     function getRandomColor() {

@@ -5,7 +5,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/dthongvl/cinerum/src/repository/model"
+	"github.com/dthongvl/cinerum/src/model"
 )
 
 type Hub struct {
@@ -46,6 +46,15 @@ func (h *Hub) Run() {
 					log.Info("NEW ROOM: " + client.RoomID)
 				}
 				h.rooms[client.RoomID][client] = true
+				//totalOnline := len(h.rooms[client.RoomID])
+				//msg := model.MessageBroadcast{
+				//	RoomID: client.RoomID,
+				//	Username: client.Username,
+				//	Data: strconv.Itoa(totalOnline),
+				//	Type: "online",
+				//}
+				//log.Println(msg)
+				//h.broadcast <- msg
 			case client := <-h.unregister:
 				clients := h.rooms[client.RoomID]
 				if clients != nil {
@@ -75,6 +84,8 @@ func (h *Hub) Run() {
 							}
 						}
 					}
+				} else {
+					log.Println("ERROR")
 				}
 			}
 		}
