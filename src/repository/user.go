@@ -64,10 +64,10 @@ func CheckStreamKey(streamKey string) (string) {
 	return user.RoomId
 }
 
-func UpdateLiveAt(roomID string, liveAt int64) {
+func UpdateLiveAt(streamKey string, liveAt int64) {
 	global.Database.GetInstance().
 		Model(&model.User{}).
-		Where("room_id = ?", roomID).
+		Where("stream_key = ?", streamKey).
 		Update("live_at", liveAt)
 }
 

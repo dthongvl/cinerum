@@ -26,7 +26,7 @@ func Events(c echo.Context) error {
 	for _, room := range streamingRooms {
 		event := model.Event{
 			RoomId: room.RoomId,
-			StreamThumbnail: "",
+			StreamThumbnail: "/preview/" + room.RoomId + ".jpg",
 			StreamTitle: room.StreamTitle,
 			TotalOnline: global.ChatHub.GetTotalOnline(room.RoomId),
 		}

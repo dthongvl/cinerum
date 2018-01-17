@@ -47,7 +47,7 @@ func saveSession(c echo.Context, username string) {
 	} else {
 		cookie.Values["user"] = model.UserCookie{
 			IsLoggedIn: true,
-			RoomID:     username,
+			RoomId:     username,
 		}
 		err = cookie.Save(c.Request(), c.Response())
 		if err != nil {

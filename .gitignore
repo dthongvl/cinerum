@@ -16,6 +16,8 @@
 vendor
 Gopkg.lock
 cinerum
+preview/
 nginx-window/live/
 nginx-window/logs/
 !nginx-window/logs/.gitkeep
+!preview/.gitkeep

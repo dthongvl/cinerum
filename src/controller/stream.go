@@ -6,6 +6,8 @@ import (
 
 	"github.com/dthongvl/cinerum/src/repository"
 	"github.com/labstack/echo"
+	"os/exec"
+	"os"
 )
 
 func OnPublish(c echo.Context) error {
@@ -16,6 +18,18 @@ func OnPublish(c echo.Context) error {
 		return c.String(http.StatusForbidden, "Access Denied")
 	}
 	repository.UpdateLiveAt(streamKey, time.Now().Unix())
+	go func() {
+		for {
+			time.Sleep(30 * time.Second)
+			room := repository.FindUser(roomID)
+			if room.LiveAt == 0 {
+				os.Remove("preview/" + roomID + ".jpg")
+				break;
+			}
+			cmd := exec.Command("ffmpeg", "-i", "rtmp://127.0.0.1:1935/hls-live/" + roomID, "-vframes", "1", "-vf", "scale=280:190", "-y", "preview/" + roomID + ".jpg")
+			cmd.Run()
+		}
+	}()
 	return c.Redirect(http.StatusFound, roomID)
 }
 

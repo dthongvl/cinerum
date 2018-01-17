@@ -27,6 +27,7 @@ func (app *App) Init() {
 
 func (app *App) RegisterRoute() {
 	app.server.Static("/static", "static")
+	app.server.Static("/preview", "preview")
 	app.server.GET("/", controller.Index)
 	app.server.GET("/events", controller.Events)
 

@@ -3,35 +3,39 @@
 {{ block header() }}
 <link href="http://vjs.zencdn.net/6.2.7/video-js.css" rel="stylesheet">
 <link type="text/css" rel="stylesheet" href="/static/css/room.css">
-<title>{{ roomTitle }}</title>
+<title>{{ room.StreamTitle }}</title>
 <script>
-    var roomID = "{{ roomID }}";
-    var username = "{{ user.RoomID }}";
+    var roomID = "{{ room.RoomId }}";
+    var username = "{{ user.RoomId }}";
 </script>
 {{ end }}
 {{ block body() }}
 <div class="container">
-    <div class="row">
-        <div class="col-8">
-        {{ if liveAt != 0 }}
-            <video autoplay id="room-video" width=640 height=480 class="mx-auto video-js vjs-default-skin" controls>
-                <source src="http://localhost:8080/live/{{ roomID }}/index.m3u8" type="application/x-mpegURL">
-            </video>
-            <div class="room-title ml-5"> {{ roomTitle }} </div>
-            <div class="ml-5"><img src="/static/img/user.svg" width="16px" height="16px"> 0</div>
+<div class="row">
+    {{ if room.LiveAt != 0 }}
+        {{ if room.IsPrivate && !user.IsLoggedIn }}
+            Please login to watch this stream
         {{ else }}
-            Room {{ roomID }} is not streaming
-        {{ end }}
-        </div>
-        <div class="col-4">
-            <div style="height: 480px">
-                <ul id="chat-box" class="list-group border">
-                </ul>
-                <textarea class="border border-dark form-control" id="message-input"
-                          placeholder="Send a message.."></textarea>
+            <div class="col-8">
+            <video autoplay id="room-video" width=640 height=480 class="mx-auto video-js vjs-default-skin" controls>
+                    <source src="http://localhost:8080/live/{{ room.RoomId }}/index.m3u8" type="application/x-mpegURL">
+            </video>
+            <div class="room-title ml-5"> {{ room.StreamTitle }} </div>
+                <div class="ml-5"><img src="/static/img/user.svg" width="16px" height="16px"> 0</div>
             </div>
-        </div>
-    </div>
+            <div class="col-4">
+                <div style="height: 480px">
+                    <ul id="chat-box" class="list-group border">
+                    </ul>
+                    <textarea class="border border-dark form-control" id="message-input"
+                                  placeholder="Send a message.."></textarea>
+                </div>
+            </div>
+        {{ end }}
+    {{ else }}
+        Room {{ room.RoomId }} is not streaming
+    {{ end }}
+</div>
 </div>
 
 <script src="http://vjs.zencdn.net/6.2.7/video.js"></script>

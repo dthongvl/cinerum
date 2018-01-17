@@ -34,9 +34,7 @@ func JoinRoom(c echo.Context) error {
 	}
 	var w bytes.Buffer
 	vars := make(jet.VarMap)
-	vars.Set("roomID", roomID)
-	vars.Set("roomTitle", streamInfo.StreamTitle)
-	vars.Set("liveAt", streamInfo.LiveAt)
+	vars.Set("room", streamInfo)
 	vars.Set("user", user)
 	if err = t.Execute(&w, vars, nil); err != nil {
 		return c.String(http.StatusNoContent, "No content")
@@ -46,7 +44,7 @@ func JoinRoom(c echo.Context) error {
 
 func RoomSetting(c echo.Context) error {
 	user := getSession(c)
-	if user.RoomID != c.Param("roomID") {
+	if user.RoomId != c.Param("roomID") {
 		log.Println("access another room setting denied")
 		return errorPage(c, user, "you do not have permission to access")
 	}
@@ -56,7 +54,7 @@ func RoomSetting(c echo.Context) error {
 		return c.String(http.StatusNoContent, "No content")
 	}
 	var w bytes.Buffer
-	streamSetting := repository.FindUser(user.RoomID)
+	streamSetting := repository.FindUser(user.RoomId)
 	if streamSetting.RoomId == "" {
 		referer := c.Request().Header.Get("Referer")
 		return c.Redirect(http.StatusMovedPermanently, referer)
@@ -83,7 +81,7 @@ func UpdateRoomSetting(c echo.Context) error {
 	user := getSession(c)
 	roomID := c.Param("roomID")
 
-	if user.RoomID != roomID {
+	if user.RoomId != roomID {
 		log.Println("change another room setting denied")
 		return errorPage(c, user, "you do not have permission to change")
 	}
@@ -97,7 +95,7 @@ func UpdateRoomSetting(c echo.Context) error {
 			addFlash(c, "cannot renew stream key while streaming")
 		} else {
 			newStreamKey := "live_" + roomID + "_" + randomString(12)
-			repository.UpdateStreamKey(user.RoomID, newStreamKey)
+			repository.UpdateStreamKey(user.RoomId, newStreamKey)
 			addFlash(c, "reset successfully")
 		}
 	} else if c.FormValue("save") != "" {
@@ -131,7 +129,7 @@ func ServeWebSocket(c echo.Context) error {
 	user := getSession(c)
 
 	client := &chat.Client{
-		Username:   user.RoomID,
+		Username:   user.RoomId,
 		IsLoggedIn: user.IsLoggedIn,
 		ChatHub:    global.ChatHub,
 		Conn:       conn,

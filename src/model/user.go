@@ -4,7 +4,7 @@ import "github.com/jinzhu/gorm"
 
 type UserCookie struct {
 	IsLoggedIn bool
-	RoomID     string
+	RoomId     string
 }
 
 type User struct {

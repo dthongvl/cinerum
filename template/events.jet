@@ -12,7 +12,7 @@
 {{range event := events}}
 <a href="/{{ event.RoomId }}">
   <div class="card w-75 bg-light">
-    <img class="card-img-top" src="https://getuikit.com/v2/docs/images/placeholder_600x400.svg" alt="Card image cap">
+    <img class="card-img-top" src="{{ event.StreamThumbnail }}" alt="Card image cap">
     <div class="card-body">
       <h5 class="card-title"> {{ event.StreamTitle }} </h5>
       <h6 class="card-subtitle mb-2 text-muted"> {{ event.RoomId }} </h6>
