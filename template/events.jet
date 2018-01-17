@@ -16,7 +16,7 @@
     <div class="card-body">
       <h5 class="card-title"> {{ event.StreamTitle }} </h5>
       <h6 class="card-subtitle mb-2 text-muted"> {{ event.RoomId }} </h6>
-      <h6 class="card-subtitle text-muted"> <img src="/static/img/user.svg" width="16px" height="16px"> {{ event.TotalOnline }} </h6>
+      <h6 class="card-subtitle text-muted"> <img src="/static/img/user.svg" width="16px" height="16px"> {{ event.TotalOnline }} viewers</h6>
     </div>
   </div>
 </a>

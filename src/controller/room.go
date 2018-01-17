@@ -134,7 +134,7 @@ func ServeWebSocket(c echo.Context) error {
 		ChatHub:    global.ChatHub,
 		Conn:       conn,
 		Send:       make(chan []byte, 256),
-		RoomID:     c.Param("roomID")}
+		RoomId:     c.Param("roomID")}
 	client.ChatHub.Register(client)
 
 	// Allow collection of memory referenced by the caller by doing all work in

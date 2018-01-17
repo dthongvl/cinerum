@@ -26,7 +26,7 @@ const (
 type Client struct {
 	ChatHub *Hub
 
-	RoomID string
+	RoomId string
 
 	// The websocket connection.
 	Conn *websocket.Conn

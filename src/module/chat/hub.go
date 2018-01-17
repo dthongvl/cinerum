@@ -6,6 +6,7 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/dthongvl/cinerum/src/model"
+	"strconv"
 )
 
 type Hub struct {
@@ -46,48 +47,38 @@ func (h *Hub) Run() {
 		for {
 			select {
 			case client := <-h.register:
-				clients := h.rooms[client.RoomID]
+				clients := h.rooms[client.RoomId]
 				if clients == nil {
 					clients = make(map[*Client]bool)
-					h.rooms[client.RoomID] = clients
-					log.Info("NEW ROOM: " + client.RoomID)
+					h.rooms[client.RoomId] = clients
+					log.Info("NEW ROOM: " + client.RoomId)
 				}
-				h.rooms[client.RoomID][client] = true
-				//totalOnline := len(h.rooms[client.RoomID])
-				//msg := model.MessageBroadcast{
-				//	RoomID: client.RoomID,
-				//	Username: client.Username,
-				//	Data: strconv.Itoa(totalOnline),
-				//	Type: "online",
-				//}
-				//log.Println(msg)
-				//h.broadcast <- msg
+				h.rooms[client.RoomId][client] = true
+				go h.broadcastTotalOnline(client.RoomId, client.Username)
 			case client := <-h.unregister:
-				clients := h.rooms[client.RoomID]
-				if clients != nil {
-					if _, ok := h.rooms[client.RoomID]; ok {
-						delete(h.rooms[client.RoomID], client)
-						close(client.Send)
-						log.Info("CLIENT LEAVE")
-						if len(h.rooms[client.RoomID]) == 0 {
-							delete(h.rooms, client.RoomID)
-							log.Info("REMOVE ROOM: " + client.RoomID)
-						}
+				if _, ok := h.rooms[client.RoomId]; ok {
+					delete(h.rooms[client.RoomId], client)
+					close(client.Send)
+					log.Info("CLIENT LEAVE")
+					if len(h.rooms[client.RoomId]) == 0 {
+						delete(h.rooms, client.RoomId)
+						log.Info("REMOVE ROOM: " + client.RoomId)
 					}
+					go h.broadcastTotalOnline(client.RoomId, client.Username)
 				}
 			case msg := <-h.broadcast:
 				jsonMsg, err := json.Marshal(msg)
-				log.Println("BROADCAST:", msg, "TO ROOM", msg.RoomID)
+				log.Println("BROADCAST:", msg, "TO ROOM", msg.RoomId)
 				if err == nil {
-					clients := h.rooms[msg.RoomID]
+					clients := h.rooms[msg.RoomId]
 					for client := range clients {
 						select {
 						case client.Send <- jsonMsg:
 						default:
 							close(client.Send)
-							delete(h.rooms[msg.RoomID], client)
-							if len(h.rooms[msg.RoomID]) == 0 {
-								delete(h.rooms, msg.RoomID)
+							delete(h.rooms[msg.RoomId], client)
+							if len(h.rooms[msg.RoomId]) == 0 {
+								delete(h.rooms, msg.RoomId)
 							}
 						}
 					}
@@ -97,4 +88,15 @@ func (h *Hub) Run() {
 			}
 		}
 	}()
+}
+
+func (h *Hub) broadcastTotalOnline(roomId string, username string) {
+	totalOnline := h.GetTotalOnline(roomId)
+	msg := model.MessageBroadcast{
+		RoomId:   roomId,
+		Username: username,
+		Data:     strconv.Itoa(totalOnline),
+		Type:     "online",
+	}
+	h.broadcast <- msg
 }

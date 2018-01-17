@@ -59,7 +59,7 @@ $(document).ready(function () {
     }
 
     function onUpdateTotalOnline(message) {
-        $('#total-online').val(message.data)
+        $('#total-online').text(message.data)
     }
 
     function getRandomColor() {
