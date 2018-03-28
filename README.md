@@ -21,14 +21,12 @@ dep ensure
 - Visit [http://localhost:3000](http://localhost:3000) to get stream key in settings after logged in
 - Run ffmpeg to push stream:
 ```
-ffmpeg -re -i [fileName] -strict experimental -c:v libx264 -preset veryfast -maxrate 3000k -bufsize 6000k -pix_fmt yuv420p -g 50 -c:a aac -b:a 160k -ac 2 -ar 44100 -f flv rtmp://localhost:1935/app/live_dthongvl_zxcqwertyuiop
+ffmpeg -re -i [fileName] -strict experimental -c:v libx264 -preset veryfast -maxrate 3000k -bufsize 6000k -pix_fmt yuv420p -g 50 -c:a aac -b:a 160k -ac 2 -ar 44100 -f flv rtmp://localhost:1935/app/[streamKey]
 ```
 - [Enjoy](http://localhost:3000)
 
 ### TODO
 - [ ] Adjust chat box and player size
-- [ ] Show auth modal when unauthenticated user chat
-- [ ] Register feature
 - [ ] Improve video player UI
 
 ### Credits and References
